@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Recipes for Recovery — The Hope Collection</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500&family=Caveat:wght@600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'DM Sans', sans-serif; background: #FAF7F4; color: #2C2420; }
+
+    .announcement-bar { background: #2C2420; padding: 10px 80px; text-align: center; }
+    .announcement-bar span { font-family: 'Caveat', cursive; font-size: 16px; color: #E8C4DA; }
+    nav { background: #FAF7F4; border-bottom: 0.5px solid #E8DDD8; height: 72px; display: flex; align-items: center; justify-content: space-between; padding: 0 80px; }
+    .nav-logo { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; color: #2C2420; text-decoration: none; }
+    .nav-logo em { font-weight: 400; font-style: italic; color: #C17B5C; }
+    .nav-links { display: flex; gap: 36px; }
+    .nav-links a { font-size: 14px; color: #5C4E47; text-decoration: none; }
+    .btn-dark { background: #2C2420; color: #FAF7F4; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; padding: 10px 22px; border-radius: 100px; text-decoration: none; }
+
+    .product-hero { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; padding: 80px 80px 96px; align-items: start; }
+    .product-hero-left { position: sticky; top: 24px; }
+
+    /* COOKBOOK MOCKUP */
+    .cookbook-mockup {
+      position: relative;
+    }
+    .cookbook-cover {
+      background: #C17B5C;
+      border-radius: 4px 16px 16px 4px;
+      padding: 40px 36px;
+      box-shadow: -6px 0 0 #A5634A, 0 20px 60px rgba(44,36,32,0.22);
+      position: relative;
+      min-height: 360px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .cookbook-spine { position: absolute; left: -6px; top: 0; bottom: 0; width: 6px; background: #A5634A; border-radius: 4px 0 0 4px; }
+    .cookbook-cover-top { }
+    .cookbook-label { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(250,247,244,0.6); margin-bottom: 16px; }
+    .cookbook-title { font-family: 'Playfair Display', serif; font-size: 44px; font-weight: 700; color: #FAF7F4; line-height: 0.95; margin-bottom: 6px; }
+    .cookbook-title em { font-style: italic; font-weight: 400; color: rgba(250,247,244,0.75); font-size: 38px; display: block; }
+    .cookbook-sub-label { font-family: 'Caveat', cursive; font-size: 15px; color: rgba(250,247,244,0.65); margin-top: 12px; }
+    .cookbook-cover-bottom { }
+    .cookbook-rule { height: 1px; background: rgba(250,247,244,0.2); margin-bottom: 12px; }
+    .cookbook-footer-text { font-size: 10px; letter-spacing: 0.08em; color: rgba(250,247,244,0.45); }
+
+    .recipe-card-preview {
+      background: #FAF7F4;
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 20px;
+      box-shadow: 0 8px 24px rgba(44,36,32,0.1);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 16px;
+      align-items: start;
+    }
+    .recipe-card-name { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+    .recipe-card-desc { font-size: 12px; color: #5C4E47; line-height: 1.5; font-weight: 300; }
+    .recipe-card-tags { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+    .recipe-tag { font-size: 10px; background: #F0DDD4; color: #C17B5C; padding: 4px 10px; border-radius: 100px; }
+    .recipe-time { font-family: 'Caveat', cursive; font-size: 20px; color: #C17B5C; text-align: right; }
+    .recipe-time-label { font-size: 9px; color: #9B8B82; letter-spacing: 0.06em; text-align: right; display: block; }
+
+    /* PRODUCT INFO */
+    .breadcrumb { font-size: 12px; color: #9B8B82; margin-bottom: 20px; }
+    .breadcrumb a { color: #9B8B82; text-decoration: none; }
+    .product-eyebrow { font-family: 'Caveat', cursive; font-size: 20px; color: #C17B5C; margin-bottom: 8px; }
+    .product-title { font-family: 'Playfair Display', serif; font-size: 52px; font-weight: 700; line-height: 1.02; margin-bottom: 8px; }
+    .product-title em { font-style: italic; font-weight: 400; color: #C17B5C; display: block; }
+    .product-tagline { font-size: 18px; color: #5C4E47; line-height: 1.7; margin-bottom: 32px; max-width: 480px; font-weight: 300; }
+    .price-block { display: flex; align-items: center; gap: 16px; margin-bottom: 32px; }
+    .price { font-family: 'Playfair Display', serif; font-size: 48px; font-weight: 700; }
+    .price-note { font-size: 13px; color: #9B8B82; line-height: 1.5; }
+    .buy-btn { display: block; background: #2C2420; color: #FAF7F4; font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 500; padding: 18px 48px; border-radius: 100px; text-decoration: none; margin-bottom: 16px; text-align: center; }
+    .buy-impact { font-size: 12px; color: #4A7A4A; background: #D4E8D4; padding: 8px 16px; border-radius: 100px; text-align: center; display: block; margin-bottom: 32px; }
+    .divider { height: 0.5px; background: #E8DDD8; margin: 32px 0; }
+    .what-label { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #9B8B82; margin-bottom: 16px; }
+    .what-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; }
+    .what-item { display: flex; gap: 12px; align-items: flex-start; }
+    .what-dot { width: 6px; height: 6px; border-radius: 50%; background: #C17B5C; margin-top: 7px; flex-shrink: 0; }
+    .what-text { font-size: 15px; color: #5C4E47; line-height: 1.6; }
+    .format-row { display: flex; gap: 10px; flex-wrap: wrap; }
+    .format-badge { font-size: 12px; color: #5C4E47; background: #F0DDD4; padding: 6px 14px; border-radius: 100px; }
+
+    /* RECIPE GRID */
+    .recipes-section { background: #2C2420; padding: 80px; }
+    .recipes-section .section-label { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(250,247,244,0.4); margin-bottom: 8px; }
+    .recipes-section .section-title { font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 700; color: #FAF7F4; margin-bottom: 48px; }
+    .recipes-section .section-title em { font-style: italic; font-weight: 400; color: #C17B5C; }
+    .recipes-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .recipe-full-card { background: rgba(250,247,244,0.06); border: 0.5px solid rgba(250,247,244,0.1); border-radius: 16px; padding: 24px; }
+    .rfc-chapter { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(250,247,244,0.35); margin-bottom: 8px; }
+    .rfc-name { font-family: 'Playfair Display', serif; font-size: 20px; color: #FAF7F4; margin-bottom: 8px; line-height: 1.2; }
+    .rfc-name em { font-style: italic; font-weight: 400; color: #C17B5C; }
+    .rfc-desc { font-size: 13px; color: rgba(250,247,244,0.55); line-height: 1.6; font-weight: 300; }
+    .rfc-meta { display: flex; gap: 12px; margin-top: 14px; }
+    .rfc-tag { font-size: 11px; color: rgba(250,247,244,0.4); background: rgba(250,247,244,0.06); padding: 4px 10px; border-radius: 100px; }
+
+    /* CTA */
+    .cta-section { background: #C17B5C; padding: 80px; display: flex; align-items: center; justify-content: space-between; gap: 60px; }
+    .cta-eyebrow { font-family: 'Caveat', cursive; font-size: 20px; color: rgba(250,247,244,0.8); margin-bottom: 12px; }
+    .cta-title { font-family: 'Playfair Display', serif; font-size: 40px; font-weight: 700; color: #FAF7F4; line-height: 1.2; margin-bottom: 16px; }
+    .cta-title em { font-style: italic; font-weight: 400; }
+    .cta-desc { font-size: 15px; color: rgba(250,247,244,0.75); line-height: 1.7; font-weight: 300; max-width: 420px; }
+    .cta-right { display: flex; flex-direction: column; align-items: center; gap: 16px; flex-shrink: 0; }
+    .cta-price { font-family: 'Playfair Display', serif; font-size: 80px; font-weight: 700; color: #FAF7F4; line-height: 1; }
+    .btn-dark-pill { background: #2C2420; color: #FAF7F4; font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 500; padding: 16px 40px; border-radius: 100px; text-decoration: none; }
+
+    footer { background: #FAF7F4; border-top: 0.5px solid #E8DDD8; padding: 48px 80px; display: flex; justify-content: space-between; align-items: flex-start; gap: 40px; }
+    .footer-logo { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 700; color: #2C2420; margin-bottom: 8px; }
+    .footer-logo em { font-style: italic; font-weight: 400; color: #C17B5C; }
+    .footer-mission { font-family: 'Caveat', cursive; font-size: 14px; color: #B05C9B; margin-bottom: 4px; }
+    .footer-legal { font-size: 12px; color: #9B8B82; }
+    .footer-links { display: flex; gap: 48px; }
+    .footer-col { display: flex; flex-direction: column; gap: 12px; }
+    .footer-col-title { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: #9B8B82; }
+    .footer-col a { font-size: 14px; color: #5C4E47; text-decoration: none; }
+  </style>
+</head>
+<body>
+
+  <div class="announcement-bar">
+    <span style="color:#C17B5C; font-family:'Playfair Display',serif; font-style:italic; font-size:13px; margin-right:8px;">The Hope Collection</span>
+    <span>Built to support End Overdose St. Pete</span>
+  </div>
+
+  <nav>
+    <a href="index.html" class="nav-logo">The Hope <em>Collection</em></a>
+    <div class="nav-links">
+      <a href="index.html">Shop</a>
+      <a href="index.html#impact">Our Impact</a>
+      <a href="index.html#stories">Stories</a>
+      <a href="index.html#about">About</a>
+    </div>
+    <a href="#buy" class="btn-dark">Get the Cookbook — $20</a>
+  </nav>
+
+  <div class="product-hero">
+    <div class="product-hero-left">
+      <div class="cookbook-mockup">
+        <div class="cookbook-cover">
+          <div class="cookbook-spine"></div>
+          <div class="cookbook-cover-top">
+            <div class="cookbook-label">A Digital Cookbook</div>
+            <div class="cookbook-title">Recipes<em>for Recovery</em></div>
+            <div class="cookbook-sub-label">food that actually helps</div>
+          </div>
+          <div class="cookbook-cover-bottom">
+            <div class="cookbook-rule"></div>
+            <div class="cookbook-footer-text">The Hope Collection — Built to support End Overdose St. Pete</div>
+          </div>
+        </div>
+        <div class="recipe-card-preview">
+          <div>
+            <div class="recipe-card-name">Morning Reset Bowl</div>
+            <div class="recipe-card-desc">A grounding breakfast for days when your body needs support. Warm, simple, and forgiving of a foggy morning.</div>
+            <div class="recipe-card-tags">
+              <span class="recipe-tag">Mood support</span>
+              <span class="recipe-tag">Easy prep</span>
+              <span class="recipe-tag">High protein</span>
+            </div>
+          </div>
+          <div>
+            <div class="recipe-time">15</div>
+            <span class="recipe-time-label">minutes</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="padding-top:8px;">
+      <div class="breadcrumb"><a href="index.html">Shop</a> / Recipes for Recovery</div>
+      <div class="product-eyebrow">a digital cookbook</div>
+      <h1 class="product-title">Recipes<br><em>for Recovery.</em></h1>
+      <p class="product-tagline">Forty recipes for people who are healing — easy, nourishing meals with notes on why they help and how to make them when motivation is low.</p>
+
+      <div class="price-block">
+        <div class="price">$20</div>
+        <div class="price-note">One-time purchase.<br>Instant digital download.</div>
+      </div>
+
+      <a href="#" class="buy-btn" id="buy">Get Recipes for Recovery — $20</a>
+      <span class="buy-impact">Every purchase funds harm reduction resources in St. Pete</span>
+
+      <div class="divider"></div>
+
+      <div class="what-label">What's included</div>
+      <div class="what-list">
+        <div class="what-item"><div class="what-dot"></div><div class="what-text">40 original recipes organized by chapter and energy level</div></div>
+        <div class="what-item"><div class="what-dot"></div><div class="what-text">Nutrition notes written in plain language — why this food, why now</div></div>
+        <div class="what-item"><div class="what-dot"></div><div class="what-text">"Low spoon" versions of every recipe for hard days</div></div>
+        <div class="what-item"><div class="what-dot"></div><div class="what-text">A simple pantry guide to stock for healing without overwhelm</div></div>
+        <div class="what-item"><div class="what-dot"></div><div class="what-text">Stories woven between recipes — you won't feel alone in the kitchen</div></div>
+        <div class="what-item"><div class="what-dot"></div><div class="what-text">Beautifully designed PDF, easy to read on tablet or print</div></div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="what-label">Format</div>
+      <div class="format-row">
+        <span class="format-badge">PDF download</span>
+        <span class="format-badge">Tablet friendly</span>
+        <span class="format-badge">Print at home</span>
+        <span class="format-badge">40 recipes</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- RECIPE GRID -->
+  <div class="recipes-section">
+    <div class="section-label">Inside the cookbook</div>
+    <div class="section-title">Four chapters.<br><em>All of it nourishing.</em></div>
+    <div class="recipes-grid">
+      <div class="recipe-full-card">
+        <div class="rfc-chapter">Chapter 01 · Morning</div>
+        <div class="rfc-name">Start <em>gently.</em></div>
+        <div class="rfc-desc">Ten breakfast recipes for mornings when your body is waking up from something hard. Warm, simple, and forgiving.</div>
+        <div class="rfc-meta">
+          <span class="rfc-tag">Morning Reset Bowl</span>
+          <span class="rfc-tag">Ginger Egg Scramble</span>
+        </div>
+      </div>
+      <div class="recipe-full-card">
+        <div class="rfc-chapter">Chapter 02 · Rebuild</div>
+        <div class="rfc-name">Feed the <em>body.</em></div>
+        <div class="rfc-desc">Twelve meals focused on nutrients that help with mood, sleep, and nervous system regulation. Science-backed, soul-approved.</div>
+        <div class="rfc-meta">
+          <span class="rfc-tag">Turmeric Lentil Soup</span>
+          <span class="rfc-tag">Salmon Rice Bowl</span>
+        </div>
+      </div>
+      <div class="recipe-full-card">
+        <div class="rfc-chapter">Chapter 03 · Connection</div>
+        <div class="rfc-name">Cook for <em>someone.</em></div>
+        <div class="rfc-desc">Ten recipes for sharing. Because healing happens in community, and feeding people is one of the most generous things you can do.</div>
+        <div class="rfc-meta">
+          <span class="rfc-tag">Sunday Sofrito</span>
+          <span class="rfc-tag">Community Bread</span>
+        </div>
+      </div>
+      <div class="recipe-full-card">
+        <div class="rfc-chapter">Chapter 04 · Comfort</div>
+        <div class="rfc-name">The hard <em>days.</em></div>
+        <div class="rfc-desc">Eight low-effort recipes for when getting out of bed was already the hard thing. No shame in simple. Simple is enough.</div>
+        <div class="rfc-meta">
+          <span class="rfc-tag">5-Minute Noodles</span>
+          <span class="rfc-tag">The Reset Smoothie</span>
+        </div>
+      </div>
+      <div class="recipe-full-card" style="grid-column: span 2;">
+        <div class="rfc-chapter">Throughout · Pantry Guide + Stories</div>
+        <div class="rfc-name">The stuff between the <em>recipes.</em></div>
+        <div class="rfc-desc">A simple guide to stocking a healing pantry on a budget. And short stories woven between chapters — real moments from real recovery, written with honesty and care. You won't feel alone in the kitchen.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <div>
+      <div class="cta-eyebrow">forty recipes for healing</div>
+      <div class="cta-title">Food is part<br>of <em>getting better.</em></div>
+      <div class="cta-desc">Recovery isn't just about what you stop doing. It's about what you start doing for yourself. Eating well — even imperfectly — is a form of self-respect. This cookbook makes it easier.</div>
+    </div>
+    <div class="cta-right">
+      <div class="cta-price">$20</div>
+      <a href="#" class="btn-dark-pill">Get the Cookbook</a>
+      <div style="font-size:12px; color:rgba(250,247,244,0.65); text-align:center;">PDF download · 40 recipes</div>
+    </div>
+  </div>
+
+  <footer>
+    <div>
+      <div class="footer-logo">The Hope <em>Collection</em></div>
+      <div class="footer-mission">Built to support End Overdose St. Pete</div>
+      <div class="footer-legal">© 2025 The Hope Collection. All rights reserved.</div>
+    </div>
+    <div class="footer-links">
+      <div class="footer-col"><div class="footer-col-title">Shop</div><a href="index.html">All Products</a><a href="hope-bundle.html">The Hope Bundle</a><a href="#">Gift a Purchase</a></div>
+      <div class="footer-col"><div class="footer-col-title">Learn</div><a href="index.html#impact">Our Impact</a><a href="index.html#stories">Stories</a><a href="#">Resources</a></div>
+      <div class="footer-col"><div class="footer-col-title">Connect</div><a href="index.html#about">About</a><a href="#">Instagram</a><a href="#">FAQ</a></div>
+    </div>
+  </footer>
+
+</body>
+</html>

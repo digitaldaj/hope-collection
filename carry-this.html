@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Carry This — The Hope Collection</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@400;500&family=Caveat:wght@600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'DM Sans', sans-serif; background: #FAF7F4; color: #2C2420; }
+
+    .announcement-bar { background: #2C2420; padding: 10px 80px; text-align: center; }
+    .announcement-bar span { font-family: 'Caveat', cursive; font-size: 16px; color: #E8C4DA; }
+
+    nav { background: #FAF7F4; border-bottom: 0.5px solid #E8DDD8; height: 72px; display: flex; align-items: center; justify-content: space-between; padding: 0 80px; }
+    .nav-logo { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; color: #2C2420; text-decoration: none; }
+    .nav-logo em { font-weight: 400; font-style: italic; color: #C17B5C; }
+    .nav-links { display: flex; gap: 36px; }
+    .nav-links a { font-size: 14px; color: #5C4E47; text-decoration: none; }
+    .nav-links a:hover { color: #2C2420; }
+    .btn-dark { background: #2C2420; color: #FAF7F4; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; padding: 10px 22px; border-radius: 100px; text-decoration: none; border: none; cursor: pointer; }
+
+    /* HERO */
+    .product-hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      padding: 80px 80px 96px;
+      align-items: start;
+    }
+
+    .product-hero-left { position: sticky; top: 24px; }
+
+    /* PHONE MOCKUP */
+    .phone-stack {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      padding-bottom: 12px;
+      scrollbar-width: none;
+    }
+    .phone-stack::-webkit-scrollbar { display: none; }
+
+    .phone {
+      flex-shrink: 0;
+      width: 160px;
+      height: 346px;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 12px 32px rgba(44,36,32,0.18);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 18px 14px 14px;
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    .phone:hover { transform: translateY(-4px); }
+
+    .phone-label {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 7px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      opacity: 0.5;
+      margin-bottom: 6px;
+    }
+
+    /* WALLPAPER CONTENT scaled down */
+    .wp-eyebrow { font-family: 'Caveat', cursive; font-size: 9px; line-height: 1; margin-bottom: 4px; }
+    .wp-headline { font-family: 'Playfair Display', serif; font-weight: 700; line-height: 1; }
+    .wp-headline-italic { font-style: italic; font-weight: 400; }
+    .wp-sub { font-family: 'DM Sans', sans-serif; font-size: 5px; letter-spacing: 0.1em; text-transform: uppercase; line-height: 1.5; }
+    .wp-caveat { font-family: 'Caveat', cursive; font-weight: 600; line-height: 0.92; }
+    .wp-rule { height: 1px; margin: 8px 0; }
+    .wp-footer { font-family: 'DM Sans', sans-serif; font-size: 4.5px; letter-spacing: 0.02em; opacity: 0.5; line-height: 1.5; }
+
+    /* PRODUCT INFO */
+    .product-info { padding-top: 8px; }
+
+    .breadcrumb { font-size: 12px; color: #9B8B82; margin-bottom: 20px; }
+    .breadcrumb a { color: #9B8B82; text-decoration: none; }
+    .breadcrumb a:hover { color: #2C2420; }
+
+    .product-eyebrow { font-family: 'Caveat', cursive; font-size: 20px; color: #B05C9B; margin-bottom: 8px; }
+
+    .product-title { font-family: 'Playfair Display', serif; font-size: 56px; font-weight: 700; line-height: 1.05; margin-bottom: 8px; }
+    .product-title em { font-style: italic; font-weight: 400; color: #C17B5C; }
+
+    .product-tagline { font-size: 18px; color: #5C4E47; line-height: 1.7; margin-bottom: 32px; max-width: 480px; }
+
+    .price-block { display: flex; align-items: center; gap: 16px; margin-bottom: 32px; }
+    .price { font-family: 'Playfair Display', serif; font-size: 48px; font-weight: 700; color: #2C2420; }
+    .price-note { font-size: 13px; color: #9B8B82; line-height: 1.5; }
+
+    .buy-btn {
+      display: inline-block;
+      background: #2C2420;
+      color: #FAF7F4;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      font-weight: 500;
+      padding: 18px 48px;
+      border-radius: 100px;
+      text-decoration: none;
+      margin-bottom: 16px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .buy-impact {
+      font-size: 12px;
+      color: #4A7A4A;
+      background: #D4E8D4;
+      padding: 8px 16px;
+      border-radius: 100px;
+      text-align: center;
+      display: block;
+      width: 100%;
+      margin-bottom: 32px;
+    }
+
+    .divider { height: 0.5px; background: #E8DDD8; margin: 32px 0; }
+
+    .what-label { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #9B8B82; margin-bottom: 16px; }
+
+    .what-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; }
+    .what-item { display: flex; gap: 12px; align-items: flex-start; }
+    .what-dot { width: 6px; height: 6px; border-radius: 50%; background: #C17B5C; margin-top: 7px; flex-shrink: 0; }
+    .what-text { font-size: 15px; color: #5C4E47; line-height: 1.6; }
+
+    .format-row { display: flex; gap: 10px; flex-wrap: wrap; }
+    .format-badge { font-size: 12px; color: #5C4E47; background: #F0DDD4; padding: 6px 14px; border-radius: 100px; }
+
+    /* GALLERY SECTION */
+    .gallery-section { padding: 0 80px 96px; }
+    .gallery-label { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #9B8B82; margin-bottom: 8px; }
+    .gallery-title { font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 700; margin-bottom: 40px; }
+    .gallery-title em { font-style: italic; font-weight: 400; color: #C17B5C; }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 20px;
+    }
+
+    .gallery-phone {
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(44,36,32,0.14);
+      aspect-ratio: 9/19.5;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 16px 12px 12px;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .gallery-phone:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(44,36,32,0.2); }
+
+    /* CTA SECTION */
+    .cta-section { background: #2C2420; padding: 80px; display: flex; align-items: center; justify-content: space-between; gap: 60px; }
+    .cta-left { max-width: 480px; }
+    .cta-eyebrow { font-family: 'Caveat', cursive; font-size: 20px; color: #E8C4DA; margin-bottom: 12px; }
+    .cta-title { font-family: 'Playfair Display', serif; font-size: 40px; font-weight: 700; color: #FAF7F4; line-height: 1.2; margin-bottom: 16px; }
+    .cta-title em { font-style: italic; font-weight: 400; color: #C17B5C; }
+    .cta-desc { font-size: 15px; color: #C9B8B0; line-height: 1.7; }
+    .cta-right { display: flex; flex-direction: column; align-items: center; gap: 16px; flex-shrink: 0; }
+    .cta-price { font-family: 'Playfair Display', serif; font-size: 80px; font-weight: 700; color: #FAF7F4; line-height: 1; }
+    .btn-light { background: #FAF7F4; color: #2C2420; font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 500; padding: 16px 40px; border-radius: 100px; text-decoration: none; }
+
+    /* FOOTER */
+    footer { background: #FAF7F4; border-top: 0.5px solid #E8DDD8; padding: 48px 80px; display: flex; justify-content: space-between; align-items: flex-start; gap: 40px; }
+    .footer-logo { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 700; color: #2C2420; margin-bottom: 8px; }
+    .footer-logo em { font-style: italic; font-weight: 400; color: #C17B5C; }
+    .footer-mission { font-family: 'Caveat', cursive; font-size: 14px; color: #B05C9B; margin-bottom: 4px; }
+    .footer-legal { font-size: 12px; color: #9B8B82; }
+    .footer-links { display: flex; gap: 48px; }
+    .footer-col { display: flex; flex-direction: column; gap: 12px; }
+    .footer-col-title { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: #9B8B82; }
+    .footer-col a { font-size: 14px; color: #5C4E47; text-decoration: none; }
+  </style>
+</head>
+<body>
+
+  <div class="announcement-bar">
+    <span style="color:#C17B5C; font-family:'Playfair Display',serif; font-style:italic; font-size:13px; margin-right:8px;">The Hope Collection</span>
+    <span>Built to support End Overdose St. Pete</span>
+  </div>
+
+  <nav>
+    <a href="index.html" class="nav-logo">The Hope <em>Collection</em></a>
+    <div class="nav-links">
+      <a href="index.html">Shop</a>
+      <a href="index.html#impact">Our Impact</a>
+      <a href="index.html#stories">Stories</a>
+      <a href="index.html#about">About</a>
+    </div>
+    <a href="#buy" class="btn-dark">Get Carry This — $1</a>
+  </nav>
+
+  <!-- PRODUCT HERO -->
+  <div class="product-hero">
+
+    <!-- PHONE PREVIEWS -->
+    <div class="product-hero-left">
+      <div class="phone-stack">
+
+        <!-- 01 Dark -->
+        <div class="phone" style="background:#2C2420;">
+          <div>
+            <div class="wp-eyebrow" style="color:#C17B5C;">a quiet truth —</div>
+            <div class="wp-headline" style="font-size:22px; color:#FAF7F4; text-transform:uppercase; line-height:0.98;">You cannot recover by staying the</div>
+            <div class="wp-headline wp-headline-italic" style="font-size:22px; color:#C17B5C; text-transform:uppercase;">same.</div>
+          </div>
+          <div class="wp-footer" style="color:rgba(250,247,244,0.5);">The Hope Collection — Built to support End Overdose St. Pete</div>
+        </div>
+
+        <!-- 02 Blush -->
+        <div class="phone" style="background:#E8C4DA; margin-top:32px;">
+          <div>
+            <div class="wp-sub" style="color:#B05C9B; margin-bottom:8px;">on healing</div>
+            <div class="wp-headline" style="font-size:16px; font-style:italic; color:#2C2420; line-height:1.1;">healing also means taking responsibility.</div>
+          </div>
+          <div>
+            <div class="wp-caveat" style="font-size:28px; color:#B05C9B;">and that's<br>brave.</div>
+            <div class="wp-footer" style="color:rgba(44,36,32,0.5); margin-top:8px;">The Hope Collection — Built to support End Overdose St. Pete</div>
+          </div>
+        </div>
+
+        <!-- 03 Sage handwritten -->
+        <div class="phone" style="background:#8AB08A; align-items:center; justify-content:center; text-align:center;">
+          <div style="display:flex; flex-direction:column; align-items:center; gap:6px;">
+            <div class="wp-caveat" style="font-size:14px; color:#2C2420; opacity:0.8;">you will be okay.</div>
+            <div class="wp-caveat" style="font-size:26px; color:#2C2420; line-height:0.92;">storms don't<br>last forever.</div>
+          </div>
+          <div class="wp-footer" style="color:rgba(44,36,32,0.5); text-align:center; position:absolute; bottom:14px; left:14px; right:14px;">The Hope Collection — Built to support End Overdose St. Pete</div>
+        </div>
+
+        <!-- 09 Dark intimate -->
+        <div class="phone" style="background:#2C2420; margin-top:48px; align-items:center; justify-content:center; text-align:center;">
+          <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+            <div class="wp-caveat" style="font-size:13px; color:#C17B5C;">from all of us —</div>
+            <div class="wp-headline wp-headline-italic" style="font-size:22px; color:#FAF7F4; line-height:1.05;">thank you<br>for staying.</div>
+          </div>
+          <div class="wp-footer" style="color:rgba(250,247,244,0.5); text-align:center; position:absolute; bottom:14px; left:14px; right:14px;">The Hope Collection — Built to support End Overdose St. Pete</div>
+        </div>
+
+        <!-- 10 Plum -->
+        <div class="phone" style="background:#B05C9B;">
+          <div>
+            <div class="wp-headline wp-headline-italic" style="font-size:18px; color:rgba(250,247,244,0.85);">the</div>
+            <div class="wp-headline" style="font-size:22px; color:#FAF7F4; letter-spacing:-0.01em; line-height:0.94;">transfor-<br>mation</div>
+          </div>
+          <div>
+            <div class="wp-headline" style="font-size:22px; color:#FAF7F4; text-transform:uppercase;">begins</div>
+            <div class="wp-caveat" style="font-size:36px; color:#2C2420; line-height:0.85;">now.</div>
+            <div class="wp-footer" style="color:rgba(250,247,244,0.6); margin-top:8px;">The Hope Collection — Built to support End Overdose St. Pete</div>
+          </div>
+        </div>
+
+      </div>
+      <p style="font-size:12px; color:#9B8B82; margin-top:16px; text-align:center;">scroll to preview all 10 wallpapers ↓</p>
+    </div>
+
+    <!-- PRODUCT INFO -->
+    <div class="product-info">
+      <div class="breadcrumb"><a href="index.html">Shop</a> / Carry This</div>
+      <div class="product-eyebrow">phone wallpapers</div>
+      <h1 class="product-title">Carry <em>This.</em></h1>
+      <p class="product-tagline">Words worth carrying. 10 beautifully designed phone wallpapers for the hard days, the good days, and everything in between.</p>
+
+      <div class="price-block">
+        <div class="price">$1</div>
+        <div class="price-note">One-time purchase.<br>Instant digital download.</div>
+      </div>
+
+      <a href="#" class="buy-btn" id="buy">Get Carry This — $1</a>
+      <span class="buy-impact">Every purchase funds Narcan training in St. Pete</span>
+
+      <div class="divider"></div>
+
+      <div class="what-label">What's included</div>
+      <div class="what-list">
+        <div class="what-item"><div class="what-dot"></div><div class="what-text">10 phone wallpapers sized for iPhone (1170 x 2532px)</div></div>
+        <div class="what-item"><div class="what-dot"></div><div class="what-text">5 color treatments — dark, blush, sage, cream, terracotta, and plum</div></div>
+        <div class="what-item"><div class="what-dot"></div><div class="what-text">Mixed typography — bold statements, handwritten script, and italic elegance</div></div>
+        <div class="what-item"><div class="what-dot"></div><div class="what-text">Each wallpaper includes "The Hope Collection — Built to support End Overdose St. Pete"</div></div>
+        <div class="what-item"><div class="what-dot"></div><div class="what-text">Delivered as a ZIP file instantly after purchase</div></div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="what-label">Format</div>
+      <div class="format-row">
+        <span class="format-badge">PNG files</span>
+        <span class="format-badge">iPhone optimized</span>
+        <span class="format-badge">Instant download</span>
+        <span class="format-badge">Works on Android too</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- FULL GALLERY -->
+  <div class="gallery-section">
+    <div class="gallery-label">All 10 Wallpapers</div>
+    <div class="gallery-title">The full <em>collection.</em></div>
+    <div class="gallery-grid">
+
+      <div class="gallery-phone" style="background:#2C2420;">
+        <div>
+          <div style="font-family:'Caveat',cursive; font-size:11px; color:#C17B5C; line-height:1; margin-bottom:6px;">a quiet truth —</div>
+          <div style="font-family:'Playfair Display',serif; font-weight:700; font-size:18px; color:#FAF7F4; text-transform:uppercase; line-height:0.98;">You cannot recover by staying the</div>
+          <div style="font-family:'Playfair Display',serif; font-style:italic; font-size:18px; color:#C17B5C; text-transform:uppercase;">same.</div>
+        </div>
+        <div style="font-family:'DM Sans',sans-serif; font-size:5px; letter-spacing:0.02em; color:rgba(250,247,244,0.5);">The Hope Collection — Built to support End Overdose St. Pete</div>
+      </div>
+
+      <div class="gallery-phone" style="background:#E8C4DA;">
+        <div>
+          <div style="font-family:'DM Sans',sans-serif; font-size:7px; letter-spacing:0.16em; text-transform:uppercase; color:#B05C9B; margin-bottom:8px;">on healing</div>
+          <div style="font-family:'Playfair Display',serif; font-style:italic; font-size:15px; line-height:1.08; color:#2C2420;">healing also means taking responsibility.</div>
+        </div>
+        <div>
+          <div style="font-family:'Caveat',cursive; font-weight:600; font-size:28px; line-height:0.9; color:#B05C9B;">and that's<br>brave.</div>
+          <div style="font-family:'DM Sans',sans-serif; font-size:5px; letter-spacing:0.02em; color:rgba(44,36,32,0.5); margin-top:6px;">The Hope Collection — Built to support End Overdose St. Pete</div>
+        </div>
+      </div>
+
+      <div class="gallery-phone" style="background:#8AB08A; align-items:center; text-align:center; justify-content:center;">
+        <div style="font-family:'Caveat',cursive; font-size:13px; color:#2C2420; opacity:0.85; margin-bottom:6px;">you will be okay.</div>
+        <div style="font-family:'Caveat',cursive; font-weight:600; font-size:24px; color:#2C2420; line-height:0.92;">storms don't<br>last forever.</div>
+        <div style="position:absolute; bottom:12px; left:12px; right:12px; font-family:'DM Sans',sans-serif; font-size:5px; color:rgba(44,36,32,0.5); text-align:center;">The Hope Collection — Built to support End Overdose St. Pete</div>
+      </div>
+
+      <div class="gallery-phone" style="background:#FAF7F4; border: 0.5px solid #E8DDD8;">
+        <div>
+          <div style="font-family:'Playfair Display',serif; font-weight:700; font-size:52px; line-height:0.8; color:#C17B5C; letter-spacing:-0.03em;">1%</div>
+          <div style="font-family:'Playfair Display',serif; font-weight:700; font-size:18px; line-height:0.98; color:#2C2420; margin-top:4px;">better<br>every day.</div>
+        </div>
+        <div>
+          <div style="font-family:'Caveat',cursive; font-weight:600; font-size:22px; color:#B05C9B; line-height:0.95;">that's the<br>whole plan.</div>
+          <div style="font-family:'DM Sans',sans-serif; font-size:5px; letter-spacing:0.02em; color:rgba(44,36,32,0.5); margin-top:6px;">The Hope Collection — Built to support End Overdose St. Pete</div>
+        </div>
+      </div>
+
+      <div class="gallery-phone" style="background:#C17B5C; justify-content:center;">
+        <div style="font-family:'DM Sans',sans-serif; font-size:7px; letter-spacing:0.28em; text-transform:uppercase; color:rgba(250,247,244,0.7); margin-bottom:12px;">remember this</div>
+        <div style="font-family:'Playfair Display',serif; font-weight:700; text-transform:uppercase; line-height:0.92; font-size:24px; color:#FAF7F4;">You were<br>built for<br>survival.</div>
+        <div style="width:40px; height:1px; background:#FAF7F4; margin:12px 0;"></div>
+        <div style="position:absolute; bottom:12px; left:12px; right:12px; font-family:'DM Sans',sans-serif; font-size:5px; color:rgba(250,247,244,0.65);">The Hope Collection — Built to support End Overdose St. Pete</div>
+      </div>
+
+      <div class="gallery-phone" style="background:#8AB08A;">
+        <div>
+          <div style="font-family:'Caveat',cursive; font-size:11px; color:#2C2420; opacity:0.55; margin-bottom:6px;">no rushing —</div>
+          <div style="font-family:'Playfair Display',serif; font-weight:700; font-size:18px; line-height:1.04; color:#2C2420;">recovery is<br>a process.</div>
+        </div>
+        <div>
+          <div style="font-family:'DM Sans',sans-serif; font-weight:500; font-size:11px; line-height:1.35; color:#2C2420;">it takes time, patience, and <span style="font-family:'Playfair Display',serif; font-style:italic; font-weight:600;">everything you've got.</span></div>
+          <div style="font-family:'DM Sans',sans-serif; font-size:5px; letter-spacing:0.02em; color:rgba(44,36,32,0.5); margin-top:6px;">The Hope Collection — Built to support End Overdose St. Pete</div>
+        </div>
+      </div>
+
+      <div class="gallery-phone" style="background:#E8C4DA;">
+        <div>
+          <div style="font-family:'Playfair Display',serif; font-weight:700; text-transform:uppercase; line-height:0.9; font-size:32px; color:#2C2420;">still<br>here.</div>
+        </div>
+        <div>
+          <div style="font-family:'DM Sans',sans-serif; font-size:7px; letter-spacing:0.14em; text-transform:uppercase; color:#B05C9B; margin-bottom:6px;">and listen —</div>
+          <div style="font-family:'Caveat',cursive; font-weight:600; font-size:22px; line-height:0.9; color:#B05C9B;">that already<br>took courage.</div>
+          <div style="font-family:'DM Sans',sans-serif; font-size:5px; color:rgba(44,36,32,0.5); margin-top:6px;">The Hope Collection — Built to support End Overdose St. Pete</div>
+        </div>
+      </div>
+
+      <div class="gallery-phone" style="background:#FAF7F4; border: 0.5px solid #E8DDD8;">
+        <div>
+          <div style="font-family:'Playfair Display',serif; font-style:italic; font-size:18px; color:#B05C9B;">soft</div>
+          <div style="font-family:'Playfair Display',serif; font-weight:700; font-size:20px; line-height:1.02; color:#2C2420; letter-spacing:-0.01em;">with yourself<br>first.</div>
+        </div>
+        <div>
+          <div style="width:20px; height:1px; background:#C17B5C; margin-bottom:8px;"></div>
+          <div style="font-family:'DM Sans',sans-serif; font-weight:500; font-size:11px; line-height:1.32; color:#2C2420;">hard days don't cancel <span style="font-family:'Playfair Display',serif; font-style:italic; color:#C17B5C;">progress.</span></div>
+          <div style="font-family:'DM Sans',sans-serif; font-size:5px; color:rgba(44,36,32,0.5); margin-top:6px;">The Hope Collection — Built to support End Overdose St. Pete</div>
+        </div>
+      </div>
+
+      <div class="gallery-phone" style="background:#2C2420; align-items:center; text-align:center; justify-content:center;">
+        <div style="font-family:'Caveat',cursive; font-size:13px; color:#C17B5C; margin-bottom:8px;">from all of us —</div>
+        <div style="font-family:'Playfair Display',serif; font-style:italic; font-size:22px; line-height:1.04; color:#FAF7F4;">thank you<br>for staying.</div>
+        <div style="position:absolute; bottom:12px; left:12px; right:12px; font-family:'DM Sans',sans-serif; font-size:5px; color:rgba(250,247,244,0.5); text-align:center;">The Hope Collection — Built to support End Overdose St. Pete</div>
+      </div>
+
+      <div class="gallery-phone" style="background:#B05C9B;">
+        <div>
+          <div style="font-family:'Playfair Display',serif; font-style:italic; font-size:16px; color:rgba(250,247,244,0.85);">the</div>
+          <div style="font-family:'Playfair Display',serif; font-weight:700; font-size:20px; line-height:0.94; color:#FAF7F4; letter-spacing:-0.02em;">transfor-<br>mation</div>
+        </div>
+        <div>
+          <div style="font-family:'Playfair Display',serif; font-weight:700; text-transform:uppercase; font-size:20px; color:#FAF7F4;">begins</div>
+          <div style="font-family:'Caveat',cursive; font-weight:600; font-size:32px; line-height:0.85; color:#2C2420;">now.</div>
+          <div style="font-family:'DM Sans',sans-serif; font-size:5px; color:rgba(250,247,244,0.6); margin-top:6px;">The Hope Collection — Built to support End Overdose St. Pete</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BOTTOM CTA -->
+  <div class="cta-section">
+    <div class="cta-left">
+      <div class="cta-eyebrow">words worth carrying</div>
+      <div class="cta-title">One dollar.<br><em>Real impact.</em></div>
+      <div class="cta-desc">Every purchase of Carry This funds Narcan training in St. Pete. That's $1 turning into a life-saving tool in someone's hands. That's what The Hope Collection is built for.</div>
+    </div>
+    <div class="cta-right">
+      <div class="cta-price">$1</div>
+      <a href="#" class="btn-light">Get Carry This</a>
+      <div style="font-size:12px; color:#9B8B82; text-align:center;">Instant download · 10 wallpapers</div>
+    </div>
+  </div>
+
+  <footer>
+    <div>
+      <div class="footer-logo">The Hope <em>Collection</em></div>
+      <div class="footer-mission">Built to support End Overdose St. Pete</div>
+      <div class="footer-legal">© 2025 The Hope Collection. All rights reserved.</div>
+    </div>
+    <div class="footer-links">
+      <div class="footer-col"><div class="footer-col-title">Shop</div><a href="index.html">All Products</a><a href="hope-bundle.html">The Hope Bundle</a><a href="#">Gift a Purchase</a></div>
+      <div class="footer-col"><div class="footer-col-title">Learn</div><a href="index.html#impact">Our Impact</a><a href="index.html#stories">Stories</a><a href="#">Resources</a></div>
+      <div class="footer-col"><div class="footer-col-title">Connect</div><a href="index.html#about">About</a><a href="#">Instagram</a><a href="#">FAQ</a></div>
+    </div>
+  </footer>
+
+</body>
+</html>

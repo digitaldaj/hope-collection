@@ -3,159 +3,117 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The Hope Bundle — The Hope Collection</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500&family=Caveat:wght@600;700&display=swap" rel="stylesheet" />
+  <title>The Hope Collection</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@400;500&family=Caveat:wght@600&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'DM Sans', sans-serif; background: #FAF7F4; color: #2C2420; }
 
     .announcement-bar { background: #2C2420; padding: 10px 80px; text-align: center; }
     .announcement-bar span { font-family: 'Caveat', cursive; font-size: 16px; color: #E8C4DA; }
-    nav { background: #FAF7F4; border-bottom: 0.5px solid #E8DDD8; height: 72px; display: flex; align-items: center; justify-content: space-between; padding: 0 80px; }
-    .nav-logo { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; color: #2C2420; text-decoration: none; }
+
+    nav { position: sticky; top: 0; z-index: 100; background: #FAF7F4; border-bottom: 0.5px solid #E8DDD8; height: 72px; display: flex; align-items: center; justify-content: space-between; padding: 0 80px; }
+    .nav-logo { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; color: #2C2420; }
     .nav-logo em { font-weight: 400; font-style: italic; color: #C17B5C; }
     .nav-links { display: flex; gap: 36px; }
     .nav-links a { font-size: 14px; color: #5C4E47; text-decoration: none; }
-    .btn-dark { background: #2C2420; color: #FAF7F4; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; padding: 10px 22px; border-radius: 100px; text-decoration: none; }
+    .nav-links a:hover { color: #2C2420; }
+    .nav-right { display: flex; align-items: center; gap: 20px; }
 
-    /* HERO — full width dark */
-    .bundle-hero {
-      background: #2C2420;
-      padding: 80px 80px 96px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: center;
-    }
+    .btn-dark { background: #2C2420; color: #FAF7F4; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; padding: 10px 22px; border-radius: 100px; text-decoration: none; border: none; cursor: pointer; }
+    .btn-outline { background: transparent; color: #2C2420; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; padding: 10px 22px; border-radius: 100px; border: 1.5px solid #2C2420; text-decoration: none; cursor: pointer; }
+    .btn-light { background: #FAF7F4; color: #2C2420; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; padding: 14px 28px; border-radius: 100px; text-decoration: none; border: none; cursor: pointer; }
+    .btn-ghost { background: transparent; color: #FAF7F4; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; padding: 14px 28px; border-radius: 100px; border: 1.5px solid rgba(250,247,244,0.3); text-decoration: none; cursor: pointer; }
 
-    /* STACKED PRODUCT CARDS */
-    .stack-visual { position: relative; height: 420px; }
-    .stack-card {
-      position: absolute;
-      border-radius: 16px;
-      padding: 24px 28px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-    }
-    .stack-card-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 8px; opacity: 0.6; }
-    .stack-card-name { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; line-height: 1.1; }
-    .stack-card-name em { font-style: italic; font-weight: 400; }
-    .stack-card-price { font-family: 'Caveat', cursive; font-size: 20px; }
+    .hero { background: #2C2420; padding: 120px 80px; display: flex; flex-direction: column; align-items: flex-start; gap: 24px; min-height: 560px; justify-content: center; position: relative; overflow: hidden; }
+    .hero::after { content: ''; position: absolute; bottom: -60px; right: -60px; width: 380px; height: 380px; border-radius: 50%; background: #B05C9B; opacity: 0.12; }
+    .hero-eyebrow { font-family: 'Caveat', cursive; font-size: 20px; color: #E8C4DA; }
+    .hero-headline { font-family: 'Playfair Display', serif; font-size: 80px; font-weight: 700; color: #FAF7F4; line-height: 1.0; max-width: 720px; }
+    .hero-headline em { font-style: italic; font-weight: 400; color: #C17B5C; }
+    .hero-sub { font-size: 18px; color: #C9B8B0; max-width: 480px; line-height: 1.7; }
+    .hero-actions { display: flex; gap: 16px; margin-top: 8px; }
 
-    /* PRODUCT INFO */
-    .bundle-eyebrow { font-family: 'Caveat', cursive; font-size: 20px; color: #C17B5C; margin-bottom: 12px; }
-    .bundle-title { font-family: 'Playfair Display', serif; font-size: 64px; font-weight: 700; line-height: 1; color: #FAF7F4; margin-bottom: 8px; }
-    .bundle-title em { font-style: italic; font-weight: 400; color: #C17B5C; display: block; }
-    .bundle-tagline { font-size: 18px; color: rgba(250,247,244,0.65); line-height: 1.7; margin-bottom: 40px; font-weight: 300; max-width: 480px; }
+    .bridge { background: #F9EDF5; padding: 64px 80px; display: flex; justify-content: space-between; align-items: center; gap: 40px; }
+    .bridge-item { display: flex; flex-direction: column; gap: 8px; flex: 1; }
+    .bridge-rule { width: 36px; height: 2px; background: #C17B5C; border-radius: 2px; }
+    .bridge-text { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: #2C2420; line-height: 1.3; }
+    .bridge-divider { width: 0.5px; height: 60px; background: #E8C4DA; }
 
-    .bundle-price-block { display: flex; align-items: flex-end; gap: 20px; margin-bottom: 16px; }
-    .bundle-price { font-family: 'Playfair Display', serif; font-size: 72px; font-weight: 700; color: #FAF7F4; line-height: 1; }
-    .bundle-was { text-decoration: line-through; font-family: 'Playfair Display', serif; font-size: 32px; color: rgba(250,247,244,0.25); }
-    .bundle-save {
-      display: inline-block;
-      background: #C17B5C;
-      color: #FAF7F4;
-      font-size: 13px;
-      font-weight: 500;
-      padding: 6px 14px;
-      border-radius: 100px;
-      margin-bottom: 24px;
-    }
-    .buy-btn-light { display: block; background: #FAF7F4; color: #2C2420; font-family: 'DM Sans', sans-serif; font-size: 17px; font-weight: 500; padding: 20px 48px; border-radius: 100px; text-decoration: none; margin-bottom: 16px; text-align: center; }
-    .buy-impact { font-size: 12px; color: #4A7A4A; background: #D4E8D4; padding: 8px 16px; border-radius: 100px; text-align: center; display: block; }
-
-    /* WHATS IN THE BUNDLE */
-    .bundle-contents { padding: 80px 80px 96px; }
+    .products { padding: 96px 80px; }
     .section-label { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #9B8B82; margin-bottom: 8px; }
-    .section-title { font-family: 'Playfair Display', serif; font-size: 40px; font-weight: 700; margin-bottom: 56px; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: 40px; font-weight: 700; color: #2C2420; margin-bottom: 48px; }
     .section-title em { font-style: italic; font-weight: 400; color: #C17B5C; }
+    .product-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .product-card { background: #fff; border-radius: 16px; border: 0.5px solid #E8DDD8; overflow: hidden; }
+    .product-thumb { height: 200px; display: flex; align-items: center; justify-content: center; padding: 24px; }
+    .product-thumb-text { font-family: 'Playfair Display', serif; font-style: italic; font-size: 20px; text-align: center; line-height: 1.4; }
+    .thumb-mauve { background: #F2D4EA; } .thumb-mauve .product-thumb-text { color: #7A2C6A; }
+    .thumb-dark { background: #2C2420; } .thumb-dark .product-thumb-text { color: #FAF7F4; }
+    .thumb-sage { background: #D4E8D4; } .thumb-sage .product-thumb-text { color: #2B5C2B; }
+    .thumb-terra { background: #F0DDD4; } .thumb-terra .product-thumb-text { color: #7A3820; }
+    .thumb-plum { background: #E8D4F0; } .thumb-plum .product-thumb-text { color: #4A1C6A; }
+    .product-info { padding: 20px 24px 24px; }
+    .product-tag { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: #9B8B82; margin-bottom: 6px; }
+    .product-name { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; color: #2C2420; margin-bottom: 6px; }
+    .product-desc { font-size: 13px; color: #5C4E47; line-height: 1.6; margin-bottom: 16px; }
+    .product-footer { display: flex; align-items: center; justify-content: space-between; }
+    .product-price { font-size: 16px; font-weight: 500; color: #2C2420; }
+    .product-impact { font-size: 11px; color: #4A7A4A; background: #D4E8D4; padding: 4px 10px; border-radius: 100px; }
 
-    .bundle-items { display: flex; flex-direction: column; gap: 0; }
-    .bundle-item {
-      display: grid;
-      grid-template-columns: 64px 1fr auto;
-      gap: 28px;
-      align-items: center;
-      padding: 28px 0;
-      border-bottom: 0.5px solid #E8DDD8;
-    }
-    .bundle-item:first-child { border-top: 0.5px solid #E8DDD8; }
-    .bundle-item-num {
-      width: 64px;
-      height: 64px;
-      border-radius: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Caveat', cursive;
-      font-size: 22px;
-      font-weight: 700;
-      flex-shrink: 0;
-    }
-    .bundle-item-info { }
-    .bundle-item-type { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #9B8B82; margin-bottom: 4px; }
-    .bundle-item-name { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; margin-bottom: 6px; }
-    .bundle-item-name em { font-style: italic; font-weight: 400; }
-    .bundle-item-desc { font-size: 14px; color: #5C4E47; line-height: 1.6; font-weight: 300; max-width: 540px; }
-    .bundle-item-price {
-      font-family: 'Playfair Display', serif;
-      font-size: 28px;
-      font-weight: 700;
-      color: #9B8B82;
-      text-decoration: line-through;
-      flex-shrink: 0;
-      text-align: right;
-    }
+    .bundle-card { grid-column: span 3; background: #1A1410; border-radius: 16px; padding: 48px; display: flex; align-items: center; justify-content: space-between; gap: 40px; }
+    .bundle-left { max-width: 560px; }
+    .bundle-eyebrow { font-family: 'Caveat', cursive; font-size: 18px; color: #E8C4DA; margin-bottom: 12px; }
+    .bundle-title { font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 700; color: #FAF7F4; margin-bottom: 12px; line-height: 1.2; }
+    .bundle-title em { font-style: italic; font-weight: 400; color: #C17B5C; }
+    .bundle-desc { font-size: 15px; color: #C9B8B0; line-height: 1.7; }
+    .bundle-right { display: flex; flex-direction: column; align-items: flex-end; gap: 16px; }
+    .bundle-price-block { text-align: right; }
+    .bundle-was { font-size: 13px; color: #9B8B82; text-decoration: line-through; }
+    .bundle-price { font-family: 'Playfair Display', serif; font-size: 48px; font-weight: 700; color: #FAF7F4; }
+    .bundle-save { font-family: 'Caveat', cursive; font-size: 16px; color: #E8C4DA; }
 
-    /* SAVINGS CALLOUT */
-    .savings-callout {
-      background: #C17B5C;
-      margin: 0 80px;
-      border-radius: 20px;
-      padding: 40px 48px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 40px;
-      margin-bottom: 96px;
-    }
-    .savings-left { }
-    .savings-eyebrow { font-family: 'Caveat', cursive; font-size: 16px; color: rgba(250,247,244,0.75); margin-bottom: 8px; }
-    .savings-title { font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 700; color: #FAF7F4; line-height: 1.15; }
-    .savings-title em { font-style: italic; font-weight: 400; }
-    .savings-right { text-align: right; flex-shrink: 0; }
-    .savings-amount { font-family: 'Playfair Display', serif; font-size: 72px; font-weight: 700; color: #FAF7F4; line-height: 1; }
-    .savings-label { font-size: 13px; color: rgba(250,247,244,0.65); margin-top: 4px; }
+    .impact { background: #F9EDF5; padding: 96px 80px; }
+    .impact-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-top: 48px; }
+    .impact-card { display: flex; flex-direction: column; gap: 10px; }
+    .impact-number { font-family: 'Playfair Display', serif; font-size: 56px; font-weight: 700; color: #2C2420; line-height: 1; }
+    .impact-number em { font-style: italic; font-weight: 400; color: #C17B5C; }
+    .impact-label { font-size: 15px; color: #5C4E47; line-height: 1.6; max-width: 280px; }
 
-    /* GIFT SECTION */
-    .gift-section { background: #E8C4DA; padding: 80px; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
-    .gift-eyebrow { font-family: 'Caveat', cursive; font-size: 18px; color: #B05C9B; margin-bottom: 12px; }
-    .gift-title { font-family: 'Playfair Display', serif; font-size: 40px; font-weight: 700; color: #2C2420; line-height: 1.2; margin-bottom: 16px; }
-    .gift-title em { font-style: italic; font-weight: 400; color: #B05C9B; }
-    .gift-desc { font-size: 15px; color: #5C4E47; line-height: 1.7; font-weight: 300; margin-bottom: 32px; }
-    .btn-plum { background: #B05C9B; color: #FAF7F4; font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 500; padding: 16px 32px; border-radius: 100px; text-decoration: none; display: inline-block; }
-    .gift-note { margin-left: 16px; font-size: 13px; color: #8A6A7A; }
+    .clothesline-section { padding: 96px 80px 64px; background: #FAF7F4; }
+    .clothesline-header { margin-bottom: 40px; }
+    .clothesline-viewport { position: relative; overflow: hidden; height: 210px; margin: 0 -80px; }
+    .clothesline-rope { position: absolute; top: 20px; left: 0; right: 0; width: 100%; height: 2px; background: #2C2420; z-index: 1; }
+    .notes-sliding { position: absolute; top: 0; left: 0; display: flex; gap: 28px; padding: 0 80px; will-change: transform; z-index: 2; }
+    .note-wrap { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+    .note-clip { width: 10px; height: 20px; background: #C17B5C; border-radius: 3px 3px 0 0; position: relative; z-index: 3; margin-bottom: -1px; }
+    .note-clip::after { content: ''; position: absolute; bottom: -4px; left: 50%; transform: translateX(-50%); width: 6px; height: 6px; background: #9B5C3A; border-radius: 50%; }
+    .note { width: 150px; min-height: 120px; max-height: 160px; padding: 14px 12px 16px; border-radius: 2px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 2px 3px 8px rgba(44,36,32,0.08); }
+    .note-text { font-family: 'Caveat', cursive; font-size: 15px; line-height: 1.4; flex: 1; }
+    .note-from { font-family: 'DM Sans', sans-serif; font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase; margin-top: 10px; opacity: 0.6; }
+    .note-n1 { background: #F9EDF5; transform: rotate(-2deg); } .note-n1 .note-text, .note-n1 .note-from { color: #7A2C6A; }
+    .note-n2 { background: #FFF8E8; transform: rotate(1.5deg); } .note-n2 .note-text, .note-n2 .note-from { color: #7A5C00; }
+    .note-n3 { background: #D4E8D4; transform: rotate(-1deg); } .note-n3 .note-text, .note-n3 .note-from { color: #2B5C2B; }
+    .note-n4 { background: #F0DDD4; transform: rotate(2.5deg); } .note-n4 .note-text, .note-n4 .note-from { color: #7A3820; }
+    .note-n5 { background: #FAF7F4; border: 0.5px solid #E8DDD8; transform: rotate(-1.5deg); } .note-n5 .note-text, .note-n5 .note-from { color: #2C2420; }
+    .note-n6 { background: #E8D4F0; transform: rotate(1deg); } .note-n6 .note-text, .note-n6 .note-from { color: #4A1C6A; }
+    .note-n7 { background: #FFF0F0; transform: rotate(-2.5deg); } .note-n7 .note-text, .note-n7 .note-from { color: #7A2020; }
+    .note-n8 { background: #E8F4F8; transform: rotate(1.5deg); } .note-n8 .note-text, .note-n8 .note-from { color: #1C4A5C; }
+    .leave-note-cta { margin-top: 40px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+    .leave-note-text { font-family: 'Caveat', cursive; font-size: 20px; color: #B05C9B; }
 
-    .gift-visual { background: #FAF7F4; border-radius: 20px; padding: 32px; box-shadow: 0 8px 32px rgba(44,36,32,0.1); }
-    .gift-tag { background: #E8C4DA; border-radius: 8px; padding: 16px 20px; margin-bottom: 16px; }
-    .gift-tag-to { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #9B8B82; margin-bottom: 4px; }
-    .gift-tag-name { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: #2C2420; }
-    .gift-message { font-family: 'Caveat', cursive; font-size: 17px; color: #5C4E47; line-height: 1.5; margin-bottom: 16px; }
-    .gift-from { font-size: 12px; color: #9B8B82; }
+    .quote-section { padding: 96px 80px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 24px; }
+    .quote-mark { font-family: 'Caveat', cursive; font-size: 80px; color: #E8C4DA; line-height: 0.5; }
+    .quote-text { font-family: 'Playfair Display', serif; font-size: 32px; font-style: italic; font-weight: 400; color: #2C2420; max-width: 700px; line-height: 1.5; }
+    .quote-attr { font-size: 13px; color: #9B8B82; letter-spacing: 0.08em; text-transform: uppercase; }
 
-    /* CTA */
-    .cta-section { background: #2C2420; padding: 96px 80px; text-align: center; }
-    .cta-eyebrow { font-family: 'Caveat', cursive; font-size: 20px; color: #C17B5C; margin-bottom: 16px; }
-    .cta-title { font-family: 'Playfair Display', serif; font-size: 52px; font-weight: 700; color: #FAF7F4; line-height: 1.1; margin-bottom: 16px; }
-    .cta-title em { font-style: italic; font-weight: 400; color: #C17B5C; }
-    .cta-desc { font-size: 16px; color: rgba(250,247,244,0.55); line-height: 1.7; font-weight: 300; max-width: 540px; margin: 0 auto 40px; }
-    .cta-pricing { display: flex; align-items: center; justify-content: center; gap: 24px; margin-bottom: 32px; }
-    .cta-price { font-family: 'Playfair Display', serif; font-size: 72px; font-weight: 700; color: #FAF7F4; line-height: 1; }
-    .cta-was { font-family: 'Playfair Display', serif; font-size: 36px; color: rgba(250,247,244,0.2); text-decoration: line-through; }
-    .btn-terracotta { display: inline-block; background: #C17B5C; color: #FAF7F4; font-family: 'DM Sans', sans-serif; font-size: 17px; font-weight: 500; padding: 20px 56px; border-radius: 100px; text-decoration: none; margin-bottom: 16px; }
-    .cta-note { font-size: 13px; color: rgba(250,247,244,0.35); }
+    .newsletter { background: #2C2420; padding: 96px 80px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 24px; }
+    .newsletter-eyebrow { font-family: 'Caveat', cursive; font-size: 20px; color: #E8C4DA; }
+    .newsletter-title { font-family: 'Playfair Display', serif; font-size: 44px; font-weight: 700; color: #FAF7F4; max-width: 560px; line-height: 1.2; }
+    .newsletter-title em { font-style: italic; font-weight: 400; color: #C17B5C; }
+    .newsletter-sub { font-size: 15px; color: #C9B8B0; max-width: 400px; line-height: 1.7; }
+    .newsletter-form { display: flex; gap: 12px; margin-top: 8px; }
+    .newsletter-input { background: rgba(250,247,244,0.08); border: 1px solid rgba(250,247,244,0.2); border-radius: 100px; padding: 14px 24px; font-family: 'DM Sans', sans-serif; font-size: 14px; color: #FAF7F4; width: 300px; outline: none; }
+    .newsletter-input::placeholder { color: #9B8B82; }
 
     footer { background: #FAF7F4; border-top: 0.5px solid #E8DDD8; padding: 48px 80px; display: flex; justify-content: space-between; align-items: flex-start; gap: 40px; }
     .footer-logo { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 700; color: #2C2420; margin-bottom: 8px; }
@@ -166,6 +124,7 @@
     .footer-col { display: flex; flex-direction: column; gap: 12px; }
     .footer-col-title { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: #9B8B82; }
     .footer-col a { font-size: 14px; color: #5C4E47; text-decoration: none; }
+    .footer-col a:hover { color: #2C2420; }
   </style>
 </head>
 <body>
@@ -176,174 +135,193 @@
   </div>
 
   <nav>
-    <a href="index.html" class="nav-logo">The Hope <em>Collection</em></a>
+    <div class="nav-logo">The Hope <em>Collection</em></div>
     <div class="nav-links">
-      <a href="index.html">Shop</a>
-      <a href="index.html#impact">Our Impact</a>
-      <a href="index.html#stories">Stories</a>
-      <a href="index.html#about">About</a>
+      <a href="#products">Shop</a>
+      <a href="#impact">Our Impact</a>
+      <a href="#stories">Stories</a>
+      <a href="#about">About</a>
     </div>
-    <a href="#buy" class="btn-dark">Get the Bundle — $39</a>
+    <div class="nav-right">
+      <a href="#products" class="btn-dark">Shop now</a>
+    </div>
   </nav>
 
-  <!-- HERO -->
-  <div class="bundle-hero">
-    <div class="stack-visual">
-      <!-- Stacked cards representing each product -->
-      <div class="stack-card" style="background:#E8C4DA; width:85%; left:7%; top:0; transform:rotate(-3deg);">
-        <div>
-          <div class="stack-card-label" style="color:#B05C9B;">guided journal</div>
-          <div class="stack-card-name" style="color:#2C2420;">Reset<em>Journal</em></div>
-        </div>
-        <div class="stack-card-price" style="color:#B05C9B;">$22 alone</div>
-      </div>
-      <div class="stack-card" style="background:#8AB08A; width:85%; left:7%; top:60px; transform:rotate(2deg);">
-        <div>
-          <div class="stack-card-label" style="color:rgba(250,247,244,0.65);">printable challenge</div>
-          <div class="stack-card-name" style="color:#FAF7F4;">30 Days<em>of Hope</em></div>
-        </div>
-        <div class="stack-card-price" style="color:rgba(250,247,244,0.75);">$15 alone</div>
-      </div>
-      <div class="stack-card" style="background:#C17B5C; width:85%; left:7%; top:130px; transform:rotate(-1deg);">
-        <div>
-          <div class="stack-card-label" style="color:rgba(250,247,244,0.65);">digital cookbook</div>
-          <div class="stack-card-name" style="color:#FAF7F4;">Recipes<em>for Recovery</em></div>
-        </div>
-        <div class="stack-card-price" style="color:rgba(250,247,244,0.75);">$20 alone</div>
-      </div>
-      <div class="stack-card" style="background:#2C2420; border:0.5px solid rgba(250,247,244,0.1); width:85%; left:7%; top:200px; transform:rotate(1.5deg);">
-        <div>
-          <div class="stack-card-label" style="color:rgba(250,247,244,0.4);">local city guide</div>
-          <div class="stack-card-name" style="color:#FAF7F4;">St. Pete<em>Good Guide</em></div>
-        </div>
-        <div class="stack-card-price" style="color:#C17B5C;">$22 alone</div>
-      </div>
-      <div class="stack-card" style="background:#FAF7F4; width:85%; left:7%; top:280px;">
-        <div>
-          <div class="stack-card-label" style="color:#9B8B82;">phone wallpapers</div>
-          <div class="stack-card-name" style="color:#2C2420;">Carry<em>This</em></div>
-        </div>
-        <div class="stack-card-price" style="color:#C17B5C;">$1 alone</div>
-      </div>
+  <section class="hero">
+    <div class="hero-eyebrow">hope is here.</div>
+    <h1 class="hero-headline">Small acts<br>of <em>care.</em></h1>
+    <p class="hero-sub">Digital products that fund overdose prevention in St. Pete — and beyond. Every purchase is intentional.</p>
+    <div class="hero-actions">
+      <a href="#products" class="btn-light">Shop the collection</a>
+      <a href="#impact" class="btn-ghost">Our impact</a>
     </div>
+  </section>
 
-    <div>
-      <div class="bundle-eyebrow">everything, together</div>
-      <h1 class="bundle-title">The Hope<em>Bundle.</em></h1>
-      <p class="bundle-tagline">All five Hope Collection products in one download. Everything you need to carry hope into your daily life — at a price that makes sense.</p>
+  <section class="bridge">
+    <div class="bridge-item"><div class="bridge-rule"></div><div class="bridge-text">Every product funds real work.</div></div>
+    <div class="bridge-divider"></div>
+    <div class="bridge-item"><div class="bridge-rule"></div><div class="bridge-text">Every dollar stays in St. Pete.</div></div>
+    <div class="bridge-divider"></div>
+    <div class="bridge-item"><div class="bridge-rule"></div><div class="bridge-text">Every purchase is an act of care.</div></div>
+  </section>
 
-      <div class="bundle-price-block">
-        <div class="bundle-price">$39</div>
-        <div class="bundle-was" style="padding-bottom:12px;">$80</div>
-      </div>
-      <span class="bundle-save">You save $41</span>
+  <section class="products" id="products">
+    <div class="section-label">The Collection</div>
+    <div class="section-title">Things worth <em>keeping.</em></div>
+    <div class="product-grid">
 
-      <a href="#" class="buy-btn-light" id="buy">Get The Hope Bundle — $39</a>
-      <span class="buy-impact" style="margin-top:12px; display:block;">Biggest impact. Every purchase funds Narcan training in St. Pete</span>
-    </div>
-  </div>
+      <a href="carry-this.html" class="product-card" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-thumb thumb-mauve"><div class="product-thumb-text">Carry This</div></div>
+        <div class="product-info">
+          <div class="product-tag">Phone Wallpapers</div>
+          <div class="product-name">Carry This</div>
+          <div class="product-desc">10 wallpapers with words worth carrying. For the hard days, the good days, and everything in between.</div>
+          <div class="product-footer"><div class="product-price">$1</div><div class="product-impact">Funds Narcan training</div></div>
+        </div>
+      </a>
 
-  <!-- WHAT'S IN THE BUNDLE -->
-  <div class="bundle-contents">
-    <div class="section-label">Five products, one price</div>
-    <div class="section-title">Everything in<br><em>the bundle.</em></div>
-    <div class="bundle-items">
-      <div class="bundle-item">
-        <div class="bundle-item-num" style="background:#E8C4DA; color:#B05C9B;">01</div>
-        <div class="bundle-item-info">
-          <div class="bundle-item-type">guided wellness journal</div>
-          <div class="bundle-item-name">Reset <em>Journal</em></div>
-          <div class="bundle-item-desc">90 days of guided daily prompts — morning, evening, and weekly reflections. Three chapters, one journey. GoodNotes-ready PDF with print-at-home version included.</div>
+      <a href="reset-journal.html" class="product-card" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-thumb thumb-dark"><div class="product-thumb-text">Reset Journal</div></div>
+        <div class="product-info">
+          <div class="product-tag">GoodNotes + PDF</div>
+          <div class="product-name">Reset Journal</div>
+          <div class="product-desc">A guided wellness journal for difficult seasons. Prompts for burnout, boundaries, gratitude, and starting again.</div>
+          <div class="product-footer"><div class="product-price">$22</div><div class="product-impact">Funds community outreach</div></div>
         </div>
-        <div class="bundle-item-price">$22</div>
-      </div>
-      <div class="bundle-item">
-        <div class="bundle-item-num" style="background:#D4E8D4; color:#4A7A4A;">02</div>
-        <div class="bundle-item-info">
-          <div class="bundle-item-type">printable challenge</div>
-          <div class="bundle-item-name">30 Days <em>of Hope</em></div>
-          <div class="bundle-item-desc">Thirty daily prompts and actions with a printable tracker. Five weekly themes. Designed to work alongside therapy, meetings, or any recovery path — start any day.</div>
-        </div>
-        <div class="bundle-item-price">$15</div>
-      </div>
-      <div class="bundle-item">
-        <div class="bundle-item-num" style="background:#F0DDD4; color:#C17B5C;">03</div>
-        <div class="bundle-item-info">
-          <div class="bundle-item-type">digital cookbook</div>
-          <div class="bundle-item-name">Recipes <em>for Recovery</em></div>
-          <div class="bundle-item-desc">Forty original recipes for people who are healing. Low-spoon versions of every recipe. Nutrition notes in plain language. Stories woven between chapters.</div>
-        </div>
-        <div class="bundle-item-price">$20</div>
-      </div>
-      <div class="bundle-item">
-        <div class="bundle-item-num" style="background:#2C2420; color:#C17B5C;">04</div>
-        <div class="bundle-item-info">
-          <div class="bundle-item-type">local digital guide</div>
-          <div class="bundle-item-name">St. Pete <em>Good Guide</em></div>
-          <div class="bundle-item-desc">92 hand-picked places across six categories. Sober-friendly filter. Clickable Google Maps links. Community and support resources included. St. Pete only, deeply personal.</div>
-        </div>
-        <div class="bundle-item-price">$22</div>
-      </div>
-      <div class="bundle-item">
-        <div class="bundle-item-num" style="background:#FAF7F4; border:0.5px solid #E8DDD8; color:#C17B5C;">05</div>
-        <div class="bundle-item-info">
-          <div class="bundle-item-type">phone wallpapers</div>
-          <div class="bundle-item-name">Carry <em>This</em></div>
-          <div class="bundle-item-desc">10 beautifully designed phone wallpapers for the hard days and the good ones. iPhone-optimized PNG files. Words worth carrying wherever you go.</div>
-        </div>
-        <div class="bundle-item-price">$1</div>
-      </div>
-    </div>
-  </div>
+      </a>
 
-  <!-- SAVINGS CALLOUT -->
-  <div class="savings-callout">
-    <div class="savings-left">
-      <div class="savings-eyebrow">when you buy together</div>
-      <div class="savings-title">Five products.<br><em>Half the price.</em></div>
-    </div>
-    <div class="savings-right">
-      <div class="savings-amount">$41</div>
-      <div class="savings-label">saved vs. buying separately</div>
-    </div>
-  </div>
-
-  <!-- GIFT SECTION -->
-  <div class="gift-section">
-    <div>
-      <div class="gift-eyebrow">give it as a gift</div>
-      <div class="gift-title">The bundle that<br>says <em>"I see you."</em></div>
-      <div class="gift-desc">Know someone who is doing the hard work of getting better? The Hope Bundle makes a meaningful, thoughtful gift — everything they need to take care of themselves, wrapped in one download.</div>
-      <div style="display:flex; align-items:center; flex-wrap:wrap; gap:12px;">
-        <a href="#" class="btn-plum">Gift the bundle →</a>
-        <span class="gift-note">Delivered instantly by email</span>
-      </div>
-    </div>
-    <div>
-      <div class="gift-visual">
-        <div class="gift-tag">
-          <div class="gift-tag-to">To</div>
-          <div class="gift-tag-name">Someone you love</div>
+      <a href="30-days-of-hope.html" class="product-card" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-thumb thumb-sage"><div class="product-thumb-text">30 Days of Hope</div></div>
+        <div class="product-info">
+          <div class="product-tag">Printable PDF</div>
+          <div class="product-name">30 Days of Hope</div>
+          <div class="product-desc">Thirty small actions that reconnect you to yourself and your community. One day at a time.</div>
+          <div class="product-footer"><div class="product-price">$15</div><div class="product-impact">Funds education programs</div></div>
         </div>
-        <div class="gift-message">"You've been doing something really hard. This is for you — all of it. You deserve every bit of support."</div>
-        <div class="gift-from">— Gifted via The Hope Collection</div>
-        <div style="margin-top:16px; padding-top:16px; border-top:0.5px solid #E8DDD8; font-size:12px; color:#9B8B82;">Instant digital delivery · No account needed</div>
+      </a>
+
+      <a href="recipes-for-recovery.html" class="product-card" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-thumb thumb-terra"><div class="product-thumb-text">Recipes for Recovery</div></div>
+        <div class="product-info">
+          <div class="product-tag">Digital Cookbook</div>
+          <div class="product-name">Recipes for Recovery</div>
+          <div class="product-desc">Community recipes, stories of resilience, and comfort meals from St. Pete's people. A coffee-table ebook.</div>
+          <div class="product-footer"><div class="product-price">$20</div><div class="product-impact">Funds healing initiatives</div></div>
+        </div>
+      </a>
+
+      <a href="st-pete-good-guide.html" class="product-card" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-thumb thumb-plum"><div class="product-thumb-text">St. Pete Good Guide</div></div>
+        <div class="product-info">
+          <div class="product-tag">Digital City Guide</div>
+          <div class="product-name">St. Pete Good Guide</div>
+          <div class="product-desc">Hidden gems, Black-owned businesses, beaches, date ideas, and recovery-friendly spaces. Explore St. Pete. Support St. Pete.</div>
+          <div class="product-footer"><div class="product-price">$22</div><div class="product-impact">Funds local partnerships</div></div>
+        </div>
+      </a>
+
+      <a href="days-worth-counting.html" class="product-card" style="text-decoration:none;color:inherit;display:block;">
+        <div class="product-thumb" style="background:#1A1410;"><div class="product-thumb-text" style="color:#E8C4DA;">Days Worth Counting</div></div>
+        <div class="product-info">
+          <div class="product-tag">PWA App</div>
+          <div class="product-name">Days Worth Counting</div>
+          <div class="product-desc">A personal counter that lives on your phone. Daily check-ins, milestone celebrations, and private notes.</div>
+          <div class="product-footer"><div class="product-price">$3</div><div class="product-impact">Funds community outreach</div></div>
+        </div>
+      </a>
+
+      <!-- DAYS WORTH COUNTING FEATURED -->
+      <div style="grid-column: span 3; background: #F9EDF5; border-radius: 16px; padding: 48px; display: flex; align-items: center; justify-content: space-between; gap: 40px; border: 0.5px solid #E8C4DA;">
+        <div style="max-width: 560px;">
+          <div style="font-family: 'Caveat', cursive; font-size: 18px; color: #B05C9B; margin-bottom: 12px;">new — pwa app</div>
+          <div style="font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 700; color: #2C2420; margin-bottom: 12px; line-height: 1.2;">Days Worth <em style="font-style:italic; font-weight:400; color:#C17B5C;">Counting.</em></div>
+          <div style="font-size: 15px; color: #5C4E47; line-height: 1.7; margin-bottom: 24px;">A personal counter that lives on your phone like an app. Set your start date, get a daily check-in, log private notes, and celebrate every milestone — Day 1, Day 30, Day 365 and beyond. Your count. Your pace. Your story.</div>
+          <div style="display:flex; gap: 12px; flex-wrap: wrap;">
+            <div style="font-size: 12px; color: #4A7A4A; background: #D4E8D4; padding: 6px 14px; border-radius: 100px;">Daily check-ins</div>
+            <div style="font-size: 12px; color: #4A7A4A; background: #D4E8D4; padding: 6px 14px; border-radius: 100px;">Milestone celebrations</div>
+            <div style="font-size: 12px; color: #4A7A4A; background: #D4E8D4; padding: 6px 14px; border-radius: 100px;">Private notes</div>
+            <div style="font-size: 12px; color: #4A7A4A; background: #D4E8D4; padding: 6px 14px; border-radius: 100px;">Works offline</div>
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 16px; flex-shrink: 0;">
+          <div style="text-align: right;">
+            <div style="font-family: 'Caveat', cursive; font-size: 16px; color: #B05C9B;">installs to your home screen</div>
+            <div style="font-family: 'Playfair Display', serif; font-size: 56px; font-weight: 700; color: #2C2420; line-height: 1;">$3</div>
+            <div style="font-size: 12px; color: #9B8B82;">funds community outreach</div>
+          </div>
+          <a href="days-worth-counting.html" class="btn-dark">Get the app</a>
+        </div>
+      </div>
+
+      <!-- BUNDLE -->
+      <div class="bundle-card">
+        <div class="bundle-left">
+          <div class="bundle-eyebrow">the complete collection</div>
+          <div class="bundle-title">The Hope <em>Bundle.</em></div>
+          <div class="bundle-desc">All five products. One intentional purchase. Carry This, Reset Journal, 30 Days of Hope, Recipes for Recovery, and Days Worth Counting — together, saving you $22.</div>
+        </div>
+        <div class="bundle-right">
+          <div class="bundle-price-block">
+            <div class="bundle-was">$61 separately</div>
+            <div class="bundle-price">$39</div>
+            <div class="bundle-save">you save $22</div>
+          </div>
+          <a href="hope-bundle.html" class="btn-light">Get the bundle</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="impact" id="impact">
+    <div class="section-label">Our Impact</div>
+    <div class="section-title">Where your money <em>goes.</em></div>
+    <div class="impact-grid">
+      <div class="impact-card"><div class="impact-number">100<em>%</em></div><div class="impact-label">of program funds go directly to End Overdose St. Pete initiatives — no corporate overhead.</div></div>
+      <div class="impact-card"><div class="impact-number">$18</div><div class="impact-label">funds one Narcan training session, putting life-saving tools in community hands.</div></div>
+      <div class="impact-card"><div class="impact-number">1 <em>in</em> 3</div><div class="impact-label">St. Pete residents know someone affected by overdose. Your purchase helps change that.</div></div>
+    </div>
+  </section>
+
+  <section class="clothesline-section" id="stories">
+    <div class="clothesline-header">
+      <div class="section-label">Community Notes</div>
+      <div class="section-title">Words people are <em>carrying.</em></div>
+    </div>
+    <div class="clothesline-viewport">
+      <div class="clothesline-rope"></div>
+      <div class="notes-sliding" id="notes-sliding">
+        <div class="note-wrap"><div class="note-clip"></div><div class="note note-n1"><div class="note-text">you will be okay. storms don't last forever.</div><div class="note-from">— Maya, St. Pete</div></div></div>
+        <div class="note-wrap"><div class="note-clip"></div><div class="note note-n2"><div class="note-text">still here. that already took courage.</div><div class="note-from">— anonymous</div></div></div>
+        <div class="note-wrap"><div class="note-clip"></div><div class="note note-n3"><div class="note-text">healing also means taking responsibility. and that's brave.</div><div class="note-from">— Tay</div></div></div>
+        <div class="note-wrap"><div class="note-clip"></div><div class="note note-n4"><div class="note-text">1% better every day. that's the whole plan.</div><div class="note-from">— Jordan, Tampa</div></div></div>
+        <div class="note-wrap"><div class="note-clip"></div><div class="note note-n5"><div class="note-text">thank you for staying.</div><div class="note-from">— The Hope Collection</div></div></div>
+        <div class="note-wrap"><div class="note-clip"></div><div class="note note-n6"><div class="note-text">you were built for survival. don't forget that.</div><div class="note-from">— Renee</div></div></div>
+        <div class="note-wrap"><div class="note-clip"></div><div class="note note-n7"><div class="note-text">soft with yourself first. always.</div><div class="note-from">— anonymous</div></div></div>
+        <div class="note-wrap"><div class="note-clip"></div><div class="note note-n8"><div class="note-text">recovery is a process. it takes time and everything you've got.</div><div class="note-from">— Chris, St. Pete</div></div></div>
       </div>
     </div>
-  </div>
-
-  <!-- CTA -->
-  <div class="cta-section">
-    <div class="cta-eyebrow">the complete collection</div>
-    <div class="cta-title">Everything you need<br>to <em>carry hope.</em></div>
-    <div class="cta-desc">Five products built for people doing the work. One price. One download. And every dollar supports End Overdose St. Pete.</div>
-    <div class="cta-pricing">
-      <div class="cta-price">$39</div>
-      <div class="cta-was">$80</div>
+    <div class="leave-note-cta">
+      <span class="leave-note-text">Have words worth carrying? Leave a note after your purchase.</span>
+      <a href="carry-this.html" class="btn-outline">Shop Carry This →</a>
     </div>
-    <a href="#" class="btn-terracotta">Get The Hope Bundle</a>
-    <div class="cta-note">Instant download · All 5 products · You save $41</div>
-  </div>
+  </section>
+
+  <section class="quote-section">
+    <div class="quote-mark">"</div>
+    <div class="quote-text">Just because you are struggling doesn't mean you're failing.</div>
+    <div class="quote-attr">— The Hope Collection Community</div>
+  </section>
+
+  <section class="newsletter" id="about">
+    <div class="newsletter-eyebrow">join us</div>
+    <div class="newsletter-title">Get <em>The Good Letter.</em></div>
+    <div class="newsletter-sub">Community spotlights, new products, one small act of hope — delivered every two weeks.</div>
+    <div class="newsletter-form">
+      <input class="newsletter-input" type="email" placeholder="your@email.com" />
+      <a href="#" class="btn-light">I'm in</a>
+    </div>
+  </section>
 
   <footer>
     <div>
@@ -352,11 +330,30 @@
       <div class="footer-legal">© 2025 The Hope Collection. All rights reserved.</div>
     </div>
     <div class="footer-links">
-      <div class="footer-col"><div class="footer-col-title">Shop</div><a href="index.html">All Products</a><a href="index.html">The Hope Bundle</a><a href="#">Gift a Purchase</a></div>
-      <div class="footer-col"><div class="footer-col-title">Learn</div><a href="index.html#impact">Our Impact</a><a href="index.html#stories">Stories</a><a href="#">Resources</a></div>
-      <div class="footer-col"><div class="footer-col-title">Connect</div><a href="index.html#about">About</a><a href="#">Instagram</a><a href="#">FAQ</a></div>
+      <div class="footer-col"><div class="footer-col-title">Shop</div><a href="#products">All Products</a><a href="hope-bundle.html">The Hope Bundle</a><a href="#">Gift a Purchase</a></div>
+      <div class="footer-col"><div class="footer-col-title">Learn</div><a href="#impact">Our Impact</a><a href="#stories">Stories</a><a href="#">Resources</a></div>
+      <div class="footer-col"><div class="footer-col-title">Connect</div><a href="#about">About</a><a href="#">Instagram</a><a href="#">FAQ</a></div>
     </div>
   </footer>
 
+  <script>
+    const sliding = document.getElementById('notes-sliding');
+    const clone = sliding.cloneNode(true);
+    clone.setAttribute('aria-hidden', 'true');
+    sliding.parentNode.appendChild(clone);
+    let pos = 0;
+    let singleWidth = 0;
+    function setup() { singleWidth = sliding.scrollWidth; }
+    function animateClothesline() {
+      pos -= 0.8;
+      if (Math.abs(pos) >= singleWidth) pos = 0;
+      sliding.style.transform = 'translateX(' + pos + 'px)';
+      clone.style.transform = 'translateX(' + (pos + singleWidth) + 'px)';
+      requestAnimationFrame(animateClothesline);
+    }
+    window.addEventListener('load', function() {
+      setTimeout(function() { setup(); animateClothesline(); }, 300);
+    });
+  </script>
 </body>
 </html>

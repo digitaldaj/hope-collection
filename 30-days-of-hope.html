@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>30 Days of Hope — The Hope Collection</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500&family=Caveat:wght@600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'DM Sans', sans-serif; background: #FAF7F4; color: #2C2420; }
+    .announcement-bar { background: #2C2420; padding: 10px 80px; text-align: center; }
+    nav { background: #FAF7F4; border-bottom: 0.5px solid #E8DDD8; height: 72px; display: flex; align-items: center; justify-content: space-between; padding: 0 80px; }
+    .nav-logo { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; color: #2C2420; text-decoration: none; }
+    .nav-logo em { font-weight: 400; font-style: italic; color: #C17B5C; }
+    .nav-links { display: flex; gap: 36px; }
+    .nav-links a { font-size: 14px; color: #5C4E47; text-decoration: none; }
+    .btn-dark { background: #2C2420; color: #FAF7F4; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; padding: 10px 22px; border-radius: 100px; text-decoration: none; }
+    .product-hero { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; padding: 80px 80px 96px; align-items: start; }
+    .breadcrumb { font-size: 12px; color: #9B8B82; margin-bottom: 20px; }
+    .breadcrumb a { color: #9B8B82; text-decoration: none; }
+    .product-eyebrow { font-family: 'Caveat', cursive; font-size: 20px; color: #C17B5C; margin-bottom: 8px; }
+    .product-title { font-family: 'Playfair Display', serif; font-size: 56px; font-weight: 700; line-height: 1.05; margin-bottom: 12px; }
+    .product-title em { font-style: italic; font-weight: 400; color: #C17B5C; }
+    .product-tagline { font-size: 17px; color: #5C4E47; line-height: 1.7; margin-bottom: 32px; max-width: 480px; font-weight: 300; }
+    .price-block { display: flex; align-items: center; gap: 16px; margin-bottom: 28px; }
+    .price { font-family: 'Playfair Display', serif; font-size: 48px; font-weight: 700; }
+    .price-note { font-size: 13px; color: #9B8B82; line-height: 1.5; }
+    .buy-btn { display: block; background: #2C2420; color: #FAF7F4; font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 500; padding: 18px 48px; border-radius: 100px; text-decoration: none; margin-bottom: 14px; text-align: center; }
+    .preview-btn { display: block; background: transparent; color: #2C2420; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 400; padding: 14px 48px; border-radius: 100px; text-decoration: none; margin-bottom: 28px; text-align: center; border: 1px solid rgba(44,36,32,0.2); }
+    .buy-impact { font-size: 12px; color: #4A7A4A; background: #D4E8D4; padding: 8px 16px; border-radius: 100px; text-align: center; display: block; margin-bottom: 32px; }
+    .divider { height: 0.5px; background: #E8DDD8; margin: 28px 0; }
+    .what-label { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #9B8B82; margin-bottom: 16px; }
+    .what-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 28px; }
+    .what-item { display: flex; gap: 12px; align-items: flex-start; }
+    .what-dot { width: 6px; height: 6px; border-radius: 50%; margin-top: 7px; flex-shrink: 0; }
+    .what-text { font-size: 14px; color: #5C4E47; line-height: 1.6; }
+    .format-row { display: flex; gap: 10px; flex-wrap: wrap; }
+    .format-badge { font-size: 12px; color: #5C4E47; padding: 6px 14px; border-radius: 100px; }
+    .preview-panel { position: sticky; top: 24px; background: #F0EBE6; border-radius: 20px; padding: 48px 40px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 480px; text-align: center; gap: 20px; }
+    .preview-arch { width: 200px; height: 280px; border-radius: 100px 100px 0 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; }
+    .preview-title { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 28px; line-height: 1.1; color: #2C2420; }
+    .preview-title em { font-style: italic; font-weight: 400; }
+    .preview-label { font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(44,36,32,0.45); }
+    .preview-caveat { font-family: 'Caveat', cursive; font-size: 16px; color: #C17B5C; }
+    .cta-section { padding: 80px; display: flex; align-items: center; justify-content: space-between; gap: 60px; }
+    .cta-eyebrow { font-family: 'Caveat', cursive; font-size: 20px; margin-bottom: 12px; }
+    .cta-title { font-family: 'Playfair Display', serif; font-size: 40px; font-weight: 700; line-height: 1.2; margin-bottom: 16px; }
+    .cta-title em { font-style: italic; font-weight: 400; }
+    .cta-desc { font-size: 15px; line-height: 1.7; font-weight: 300; max-width: 420px; }
+    .cta-right { display: flex; flex-direction: column; align-items: center; gap: 16px; flex-shrink: 0; }
+    .cta-price { font-family: 'Playfair Display', serif; font-size: 80px; font-weight: 700; line-height: 1; }
+    .btn-cta { font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 500; padding: 16px 40px; border-radius: 100px; text-decoration: none; }
+    footer { background: #FAF7F4; border-top: 0.5px solid #E8DDD8; padding: 48px 80px; display: flex; justify-content: space-between; align-items: flex-start; gap: 40px; }
+    .footer-logo { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 700; color: #2C2420; margin-bottom: 8px; }
+    .footer-logo em { font-style: italic; font-weight: 400; color: #C17B5C; }
+    .footer-mission { font-family: 'Caveat', cursive; font-size: 14px; color: #B05C9B; margin-bottom: 4px; }
+    .footer-legal { font-size: 12px; color: #9B8B82; }
+    .footer-links { display: flex; gap: 48px; }
+    .footer-col { display: flex; flex-direction: column; gap: 12px; }
+    .footer-col-title { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: #9B8B82; }
+    .footer-col a { font-size: 14px; color: #5C4E47; text-decoration: none; }
+</style>
+</head>
+<body>
+
+  <div class="announcement-bar">
+    <span style="color:#C17B5C;font-family:'Playfair Display',serif;font-style:italic;font-size:13px;margin-right:8px;">The Hope Collection</span>
+    <span style="font-family:'Caveat',cursive;font-size:16px;color:#E8C4DA;">Built to support End Overdose St. Pete</span>
+  </div>
+
+  <nav>
+    <a href="index.html" class="nav-logo">The Hope <em>Collection</em></a>
+    <div class="nav-links">
+      <a href="index.html#products">Shop</a>
+      <a href="index.html#impact">Our Impact</a>
+      <a href="index.html#stories">Stories</a>
+      <a href="index.html#about">About</a>
+    </div>
+    <a href="#buy" class="btn-dark">Get 30 Days of Hope — $15</a>
+  </nav>
+
+  <div class="product-hero">
+    <!-- PREVIEW PANEL -->
+    <div class="preview-panel">
+      <div class="preview-arch" style="background:#8AB08A;">
+        <div class="preview-title" style="color:#FAF7F4;">30 Days of Hope</div>
+        <div class="preview-label" style="color:rgba(250,247,244,0.6);">The Hope Collection</div>
+      </div>
+      <div class="preview-caveat">Built to support End Overdose St. Pete</div>
+      <a href="30-days-of-hope-download.html" target="_blank" style="font-size:12px;color:#9B8B82;text-decoration:underline;margin-top:8px;">Preview the full product ↗</a>
+    </div>
+
+    <!-- PRODUCT INFO -->
+    <div style="padding-top:8px;">
+      <div class="breadcrumb"><a href="index.html">Shop</a> / 30 Days of Hope</div>
+      <div class="product-eyebrow">printable challenge</div>
+      <h1 class="product-title">30 Days<br><em>of Hope.</em></h1>
+      <p class="product-tagline">Thirty daily prompts and actions to build momentum when you're ready to start — or start again. Four weeks, four themes, one step at a time.</p>
+
+      <div class="price-block">
+        <div class="price">$15</div>
+        <div class="price-note">One-time purchase.<br>Instant digital download.</div>
+      </div>
+
+      <a href="#" class="buy-btn" id="buy">Get 30 Days of Hope — $15</a>
+      <a href="30-days-of-hope-download.html" target="_blank" class="preview-btn">Preview before you buy ↗</a>
+      <span class="buy-impact">Every purchase funds harm reduction resources in St. Pete</span>
+
+      <div class="divider"></div>
+
+      <div class="what-label">What's included</div>
+      <div class="what-list">
+        <div class="what-item"><div class="what-dot" style="background:#8AB08A;"></div><div class="what-text">30 daily prompt cards — one reflection question, one small action</div></div><div class="what-item"><div class="what-dot" style="background:#8AB08A;"></div><div class="what-text">Four weekly themes: Honesty, Courage, Connection, Renewal</div></div><div class="what-item"><div class="what-dot" style="background:#8AB08A;"></div><div class="what-text">A printable tracker to mark your days and note your wins</div></div><div class="what-item"><div class="what-dot" style="background:#8AB08A;"></div><div class="what-text">A 'Start Here' guide — no guilt if you skip a day, just keep going</div></div><div class="what-item"><div class="what-dot" style="background:#8AB08A;"></div><div class="what-text">Designed to work alongside therapy, meetings, or any recovery path</div></div><div class="what-item"><div class="what-dot" style="background:#8AB08A;"></div><div class="what-text">Save-to-PDF instructions included — no printer required</div></div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="what-label">Format</div>
+      <div class="format-row">
+        <span class="format-badge" style="background:#D4E8D4;">PDF download</span><span class="format-badge" style="background:#D4E8D4;">Print at home</span><span class="format-badge" style="background:#D4E8D4;">Start any day</span><span class="format-badge" style="background:#D4E8D4;">US Letter + A4</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section" style="background:#8AB08A;">
+    <div>
+      <div class="cta-eyebrow" style="color:#8AB08A;">ready when you are</div>
+      <div class="cta-title" style="color:#2C2420;">30 Days of Hope.</div>
+      <div class="cta-desc" style="color:#5C4E47;">One purchase. Instant download. Every dollar supports End Overdose St. Pete — harm reduction, Narcan training, and community resources in St. Petersburg, Florida.</div>
+    </div>
+    <div class="cta-right">
+      <div class="cta-price" style="color:#2C2420;">$15</div>
+      <a href="#" class="btn-cta" style="background:#2C2420;color:#FAF7F4;">Start the Challenge</a>
+      <div style="font-size:12px;color:#9B8B82;">Instant download &middot; One-time purchase</div>
+    </div>
+  </div>
+
+  <footer>
+    <div>
+      <div class="footer-logo">The Hope <em>Collection</em></div>
+      <div class="footer-mission">Built to support End Overdose St. Pete</div>
+      <div class="footer-legal">&copy; 2025 The Hope Collection. All rights reserved.</div>
+    </div>
+    <div class="footer-links">
+      <div class="footer-col"><div class="footer-col-title">Shop</div><a href="index.html#products">All Products</a><a href="hope-bundle.html">The Hope Bundle</a><a href="#">Gift a Purchase</a></div>
+      <div class="footer-col"><div class="footer-col-title">Learn</div><a href="index.html#impact">Our Impact</a><a href="index.html#stories">Stories</a><a href="#">Resources</a></div>
+      <div class="footer-col"><div class="footer-col-title">Connect</div><a href="index.html#about">About</a><a href="#">Instagram</a><a href="#">FAQ</a></div>
+    </div>
+  </footer>
+
+</body>
+</html>
