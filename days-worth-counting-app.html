@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Days Worth Counting</title>
+  <meta name="description" content="A gentle day counter with daily check-ins, milestones and private notes. Everything stays on your device." />
+  <meta name="theme-color" content="#2C2420" />
+  <link rel="manifest" href="dwc-manifest.json" />
+  <link rel="icon" type="image/png" href="dwc-icon-192.png" />
+  <link rel="apple-touch-icon" href="dwc-icon-192.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Days" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500&family=Caveat:wght@600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --cream: #FAF7F4; --ink: #2C2420; --ink-soft: #5C4E47; --muted: #8A7A71;
+      --terra: #C17B5C; --plum: #B05C9B; --blush: #E8C4DA; --blush-soft: #F9EDF5;
+      --sage: #D4E8D4; --sage-ink: #3F6B3F; --line: #E8DDD8;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { background: var(--cream); }
+    body { font-family: 'DM Sans', sans-serif; color: var(--ink); min-height: 100vh; -webkit-font-smoothing: antialiased; }
+    button { font: inherit; cursor: pointer; }
+    .wrap { max-width: 480px; margin: 0 auto; padding: calc(20px + env(safe-area-inset-top)) 20px calc(40px + env(safe-area-inset-bottom)); }
+
+    header.top { display: flex; align-items: center; justify-content: space-between; padding: 4px 0 20px; }
+    .brand { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 700; }
+    .brand em { font-style: italic; font-weight: 400; color: var(--terra); }
+    .icon-btn { width: 44px; height: 44px; border-radius: 50%; border: 0.5px solid var(--line); background: #fff; display: inline-flex; align-items: center; justify-content: center; color: var(--ink-soft); }
+
+    .card { background: #fff; border: 0.5px solid var(--line); border-radius: 20px; padding: 24px; margin-bottom: 16px; }
+    .label { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+    .caveat { font-family: 'Caveat', cursive; }
+
+    /* Counter */
+    .counter { background: var(--ink); color: var(--cream); border: none; text-align: center; padding: 40px 24px 32px; position: relative; overflow: hidden; }
+    .counter::after { content: ''; position: absolute; right: -60px; bottom: -60px; width: 200px; height: 200px; border-radius: 50%; background: var(--plum); opacity: 0.16; }
+    .counter .caveat { font-size: 20px; color: var(--blush); }
+    .count { font-family: 'Playfair Display', serif; font-size: 112px; font-weight: 700; line-height: 1; margin: 8px 0 4px; }
+    .count-unit { font-family: 'Playfair Display', serif; font-style: italic; font-size: 22px; color: var(--terra); }
+    .since { font-size: 13px; color: #C9B8B0; margin-top: 14px; }
+    .next { position: relative; z-index: 1; margin-top: 22px; }
+    .bar { height: 6px; background: rgba(250,247,244,0.12); border-radius: 99px; overflow: hidden; margin-top: 8px; }
+    .bar > span { display: block; height: 100%; background: linear-gradient(90deg, var(--terra), var(--blush)); border-radius: 99px; }
+    .next-text { font-size: 13px; color: #C9B8B0; }
+
+    /* Celebration */
+    .celebrate { background: var(--blush-soft); border-color: var(--blush); text-align: center; }
+    .celebrate .big { font-family: 'Playfair Display', serif; font-size: 30px; font-weight: 700; margin: 4px 0 6px; }
+    .celebrate .big em { font-style: italic; font-weight: 400; color: var(--plum); }
+    .celebrate p { font-size: 15px; color: var(--ink-soft); line-height: 1.6; }
+    .text-btn { background: none; border: none; color: var(--plum); font-size: 14px; font-weight: 500; padding: 12px; min-height: 44px; }
+
+    /* Check-in */
+    .checkin-q { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; margin-bottom: 16px; }
+    .checkin-q em { font-style: italic; font-weight: 400; color: var(--terra); }
+    .choice { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .choice button { min-height: 56px; border-radius: 100px; font-size: 15px; font-weight: 500; border: 1.5px solid var(--ink); background: #fff; color: var(--ink); }
+    .choice button.primary { background: var(--ink); color: var(--cream); }
+    .done { font-size: 15px; color: var(--ink-soft); line-height: 1.6; }
+    .done strong { color: var(--ink); }
+    .week { display: flex; justify-content: space-between; margin-top: 20px; padding-top: 18px; border-top: 0.5px solid var(--line); }
+    .day { display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 11px; color: var(--muted); }
+    .dot { width: 28px; height: 28px; border-radius: 50%; border: 1px dashed var(--line); display: flex; align-items: center; justify-content: center; }
+    .dot.made { background: var(--sage); border: none; color: var(--sage-ink); }
+    .dot.soft { background: var(--blush-soft); border: none; color: var(--plum); }
+    .day.today { color: var(--ink); font-weight: 500; }
+
+    /* Milestones */
+    .milestones { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+    .ms { aspect-ratio: 1; border-radius: 16px; border: 0.5px solid var(--line); display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--cream); color: var(--muted); }
+    .ms b { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--muted); line-height: 1; }
+    .ms span { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; margin-top: 4px; }
+    .ms.reached { background: var(--ink); border-color: var(--ink); color: var(--blush); }
+    .ms.reached b { color: var(--cream); }
+    .ms.next-up { border: 1.5px dashed var(--terra); }
+
+    /* Notes */
+    textarea { width: 100%; min-height: 96px; resize: vertical; border: 0.5px solid var(--line); border-radius: 14px; padding: 14px; font: inherit; font-size: 15px; color: var(--ink); background: var(--cream); line-height: 1.5; }
+    textarea:focus, input:focus { outline: 2px solid var(--terra); outline-offset: 1px; }
+    .row { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 12px; }
+    .private { font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+    .btn-dark { background: var(--ink); color: var(--cream); border: none; border-radius: 100px; padding: 12px 24px; min-height: 44px; font-size: 14px; font-weight: 500; }
+    .btn-dark:disabled { opacity: 0.4; cursor: default; }
+    .notes-list { list-style: none; margin-top: 18px; display: flex; flex-direction: column; gap: 10px; }
+    .note { background: var(--blush-soft); border-radius: 4px; padding: 14px 14px 10px; position: relative; }
+    .note:nth-child(3n+2) { background: #FFF8E8; }
+    .note:nth-child(3n) { background: var(--sage); }
+    .note-text { font-family: 'Caveat', cursive; font-size: 20px; line-height: 1.3; color: var(--ink); white-space: pre-wrap; word-break: break-word; }
+    .note-meta { display: flex; justify-content: space-between; align-items: center; margin-top: 6px; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+    .note-meta button { background: none; border: none; color: var(--muted); font-size: 12px; padding: 8px; min-height: 36px; text-transform: none; letter-spacing: 0; }
+
+    /* Setup + settings */
+    .setup { text-align: center; padding: 48px 8px 24px; }
+    .setup h1 { font-family: 'Playfair Display', serif; font-size: 44px; line-height: 1.05; margin: 8px 0 16px; }
+    .setup h1 em { font-style: italic; font-weight: 400; color: var(--terra); }
+    .setup p { font-size: 16px; color: var(--ink-soft); line-height: 1.7; margin-bottom: 28px; }
+    .field { text-align: left; margin-bottom: 16px; }
+    .field label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 8px; }
+    input[type=date] { width: 100%; min-height: 52px; border: 0.5px solid var(--line); border-radius: 14px; padding: 12px 14px; font: inherit; font-size: 16px; color: var(--ink); background: #fff; }
+    .full { width: 100%; min-height: 56px; font-size: 16px; }
+    .hint { font-size: 13px; color: var(--muted); margin-top: 14px; line-height: 1.6; }
+    .danger { background: none; border: 1px solid #C9A9A0; color: #8A3B2B; border-radius: 100px; padding: 12px 20px; min-height: 44px; font-size: 14px; width: 100%; margin-top: 10px; }
+    .danger.confirm { background: #8A3B2B; color: #fff; border-color: #8A3B2B; }
+
+    footer.support { text-align: center; font-size: 13px; color: var(--muted); line-height: 1.7; margin-top: 28px; }
+    footer.support a { color: var(--plum); }
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="top">
+      <div class="brand">Days Worth <em>Counting</em></div>
+      <button class="icon-btn hidden" id="settingsBtn" aria-label="Settings">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      </button>
+    </header>
+
+    <!-- SETUP -->
+    <section id="setupView" class="hidden">
+      <div class="setup">
+        <div class="caveat" style="font-size:22px;color:var(--plum);">your count. your pace.</div>
+        <h1>Every day is worth <em>counting.</em></h1>
+        <p>Pick the day you started. Check in when you can, celebrate the milestones, and keep private notes along the way.</p>
+        <div class="field">
+          <label for="startInput">When did your count begin?</label>
+          <input type="date" id="startInput" />
+        </div>
+        <button class="btn-dark full" id="startBtn">Start my count</button>
+        <p class="hint">Everything stays on this device. No account, no server, nothing to leak.</p>
+      </div>
+    </section>
+
+    <!-- MAIN -->
+    <main id="mainView" class="hidden">
+      <section class="card counter" aria-live="polite">
+        <div class="caveat" id="greeting">still here.</div>
+        <div class="count" id="count">1</div>
+        <div class="count-unit" id="countUnit">day worth counting</div>
+        <div class="since" id="since"></div>
+        <div class="next" id="nextWrap">
+          <div class="next-text" id="nextText"></div>
+          <div class="bar"><span id="nextBar" style="width:0%"></span></div>
+        </div>
+      </section>
+
+      <section class="card celebrate hidden" id="celebrate" aria-live="polite">
+        <div class="caveat" style="font-size:20px;color:var(--plum);">look at you —</div>
+        <div class="big" id="celebrateTitle"></div>
+        <p id="celebrateText"></p>
+        <button class="text-btn" id="celebrateClose">Keep going</button>
+      </section>
+
+      <section class="card">
+        <div class="label">Today's check-in</div>
+        <div id="checkinAsk">
+          <div class="checkin-q">How did <em>today</em> go?</div>
+          <div class="choice">
+            <button class="primary" data-check="made">Made it</button>
+            <button data-check="soft">Tomorrow's a new one</button>
+          </div>
+        </div>
+        <div id="checkinDone" class="done hidden"></div>
+        <div class="week" id="week" aria-label="Your last seven days"></div>
+      </section>
+
+      <section class="card">
+        <div class="label">Milestones</div>
+        <div class="milestones" id="milestones"></div>
+      </section>
+
+      <section class="card">
+        <div class="label">Private notes</div>
+        <label for="noteInput" class="hidden">Write a note to yourself</label>
+        <textarea id="noteInput" placeholder="A note for future you…"></textarea>
+        <div class="row">
+          <span class="private"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Only on this device</span>
+          <button class="btn-dark" id="saveNote" disabled>Save note</button>
+        </div>
+        <ul class="notes-list" id="notesList"></ul>
+      </section>
+    </main>
+
+    <!-- SETTINGS -->
+    <section id="settingsView" class="hidden">
+      <div class="card">
+        <div class="label">Your start date</div>
+        <div class="field">
+          <label for="editStart">Change when your count began</label>
+          <input type="date" id="editStart" />
+        </div>
+        <button class="btn-dark full" id="saveStart">Save start date</button>
+        <p class="hint">Starting again is part of it. Changing the date keeps your notes.</p>
+      </div>
+      <div class="card">
+        <div class="label">Install</div>
+        <p class="done">Add this to your home screen and it works like an app, even offline.<br><strong>iPhone:</strong> tap Share, then "Add to Home Screen".<br><strong>Android:</strong> tap the menu, then "Install app".</p>
+      </div>
+      <div class="card">
+        <div class="label">Your data</div>
+        <p class="done">Your count, check-ins and notes live only in this browser on this device.</p>
+        <button class="danger" id="clearBtn">Erase everything</button>
+      </div>
+      <button class="text-btn" id="backBtn" style="width:100%;">← Back to my count</button>
+    </section>
+
+    <footer class="support">
+      If you're struggling right now, you don't have to carry it alone.<br>
+      Call or text <a href="tel:988">988</a> any time.<br>
+      <span class="caveat" style="font-size:16px;color:var(--terra);">Built by The Hope Collection to support End Overdose St. Pete</span>
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      var KEY = 'dwc-v1';
+      var MILESTONES = [1, 7, 30, 60, 90, 180, 365];
+      var MS_WORDS = {
+        1: ['Day <em>one.</em>', 'The hardest day to count is the first one. You counted it.'],
+        7: ['One <em>week.</em>', 'Seven days of choosing yourself. That is not small.'],
+        30: ['Thirty <em>days.</em>', 'A whole month. Look how far you have carried yourself.'],
+        60: ['Sixty <em>days.</em>', 'Two months of showing up. The work is working.'],
+        90: ['Ninety <em>days.</em>', 'A season of change. You built this one day at a time.'],
+        180: ['Six <em>months.</em>', 'Half a year. Thank you for staying.'],
+        365: ['One <em>year.</em>', 'Three hundred sixty-five days worth counting. Every one of them was yours.']
+      };
+      var GREETINGS = ['still here.', 'one day at a time.', 'soft with yourself first.', 'you showed up.', 'storms don’t last forever.'];
+
+      function load() {
+        try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; }
+      }
+      function save() {
+        try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+      }
+      var state = load();
+      state.checkins = state.checkins || {};
+      state.notes = state.notes || [];
+      state.celebrated = state.celebrated || [];
+
+      function pad(n) { return n < 10 ? '0' + n : '' + n; }
+      function iso(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+      function parse(s) { var p = s.split('-'); return new Date(+p[0], +p[1] - 1, +p[2]); }
+      function today() { var d = new Date(); return new Date(d.getFullYear(), d.getMonth(), d.getDate()); }
+      function dayCount() { return Math.round((today() - parse(state.start)) / 86400000) + 1; }
+      function $(id) { return document.getElementById(id); }
+      function show(id) { ['setupView', 'mainView', 'settingsView'].forEach(function (v) { $(v).classList.toggle('hidden', v !== id); }); $('settingsBtn').classList.toggle('hidden', id !== 'mainView'); }
+
+      function renderMain() {
+        var n = Math.max(dayCount(), 1);
+        $('count').textContent = n;
+        $('countUnit').textContent = n === 1 ? 'day worth counting' : 'days worth counting';
+        $('greeting').textContent = GREETINGS[n % GREETINGS.length];
+        $('since').textContent = 'since ' + parse(state.start).toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric' });
+
+        var next = MILESTONES.filter(function (m) { return m > n; })[0];
+        var prev = MILESTONES.filter(function (m) { return m <= n; }).pop() || 0;
+        if (next) {
+          var left = next - n;
+          $('nextText').textContent = left + (left === 1 ? ' day' : ' days') + ' to Day ' + next;
+          $('nextBar').style.width = Math.round(((n - prev) / (next - prev)) * 100) + '%';
+          $('nextWrap').classList.remove('hidden');
+        } else {
+          $('nextText').textContent = 'Past a full year. Every day still counts.';
+          $('nextBar').style.width = '100%';
+        }
+
+        // celebration for the most recent milestone not yet celebrated
+        var reached = MILESTONES.filter(function (m) { return m <= n && state.celebrated.indexOf(m) === -1; });
+        var c = reached.pop();
+        if (c) {
+          $('celebrateTitle').innerHTML = MS_WORDS[c][0];
+          $('celebrateText').textContent = MS_WORDS[c][1];
+          $('celebrate').classList.remove('hidden');
+          $('celebrate').dataset.m = c;
+        } else {
+          $('celebrate').classList.add('hidden');
+        }
+
+        // check-in
+        var t = iso(today());
+        var status = state.checkins[t];
+        $('checkinAsk').classList.toggle('hidden', !!status);
+        $('checkinDone').classList.toggle('hidden', !status);
+        if (status === 'made') $('checkinDone').innerHTML = '<strong>Made it.</strong> That counts. See you tomorrow.';
+        if (status === 'soft') $('checkinDone').innerHTML = '<strong>Tomorrow’s a new one.</strong> Hard days don’t cancel progress. Rest, and come back.';
+        if (status) $('checkinDone').innerHTML += ' <button class="text-btn" id="undoCheck" style="padding:4px 0;min-height:auto;">Change</button>';
+        var undo = $('undoCheck');
+        if (undo) undo.onclick = function () { delete state.checkins[t]; save(); renderMain(); };
+
+        // week
+        var wk = '';
+        for (var i = 6; i >= 0; i--) {
+          var d = new Date(today()); d.setDate(d.getDate() - i);
+          var k = iso(d), s = state.checkins[k];
+          var mark = s === 'made' ? '✓' : s === 'soft' ? '♡' : '';
+          wk += '<div class="day' + (i === 0 ? ' today' : '') + '"><div class="dot ' + (s || '') + '" aria-label="' + d.toLocaleDateString(undefined, { weekday: 'long' }) + ': ' + (s === 'made' ? 'made it' : s === 'soft' ? 'tomorrow’s a new one' : 'no check-in') + '">' + mark + '</div>' + d.toLocaleDateString(undefined, { weekday: 'narrow' }) + '</div>';
+        }
+        $('week').innerHTML = wk;
+
+        // milestones
+        var ms = '';
+        MILESTONES.forEach(function (m) {
+          var cls = m <= n ? 'reached' : (m === next ? 'next-up' : '');
+          ms += '<div class="ms ' + cls + '"><b>' + (m === 365 ? '1' : m) + '</b><span>' + (m === 365 ? 'year' : m === 1 ? 'day' : 'days') + '</span></div>';
+        });
+        ms += '<div class="ms" style="border-style:dashed;"><span class="caveat" style="font-size:16px;text-transform:none;letter-spacing:0;color:var(--terra);">and beyond</span></div>';
+        $('milestones').innerHTML = ms;
+
+        renderNotes();
+      }
+
+      function esc(s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+      function renderNotes() {
+        $('notesList').innerHTML = state.notes.slice().reverse().map(function (note) {
+          return '<li class="note"><div class="note-text">' + esc(note.text) + '</div><div class="note-meta"><span>Day ' + note.day + ' · ' + new Date(note.at).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) + '</span><button data-del="' + note.at + '" aria-label="Delete this note">Delete</button></div></li>';
+        }).join('');
+      }
+
+      // events
+      $('startInput').value = iso(today());
+      $('startInput').max = iso(today());
+      $('startBtn').onclick = function () {
+        var v = $('startInput').value || iso(today());
+        state.start = v; save(); show('mainView'); renderMain();
+      };
+      document.querySelectorAll('[data-check]').forEach(function (b) {
+        b.onclick = function () { state.checkins[iso(today())] = b.dataset.check; save(); renderMain(); };
+      });
+      $('celebrateClose').onclick = function () {
+        var m = +$('celebrate').dataset.m;
+        MILESTONES.forEach(function (x) { if (x <= m && state.celebrated.indexOf(x) === -1) state.celebrated.push(x); });
+        save(); renderMain();
+      };
+      $('noteInput').oninput = function () { $('saveNote').disabled = !this.value.trim(); };
+      $('saveNote').onclick = function () {
+        var text = $('noteInput').value.trim(); if (!text) return;
+        state.notes.push({ text: text, at: Date.now(), day: Math.max(dayCount(), 1) });
+        $('noteInput').value = ''; $('saveNote').disabled = true; save(); renderNotes();
+      };
+      $('notesList').onclick = function (e) {
+        var at = e.target.getAttribute('data-del'); if (!at) return;
+        state.notes = state.notes.filter(function (n) { return '' + n.at !== at; }); save(); renderNotes();
+      };
+      $('settingsBtn').onclick = function () { $('editStart').value = state.start; $('editStart').max = iso(today()); show('settingsView'); };
+      $('backBtn').onclick = function () { show('mainView'); renderMain(); };
+      $('saveStart').onclick = function () {
+        if (!$('editStart').value) return;
+        state.start = $('editStart').value;
+        state.celebrated = state.celebrated.filter(function (m) { return m <= dayCount(); });
+        save(); show('mainView'); renderMain();
+      };
+      var armed = false;
+      $('clearBtn').onclick = function () {
+        if (!armed) { armed = true; this.textContent = 'Tap again to erase everything'; this.classList.add('confirm'); var self = this; setTimeout(function () { armed = false; self.textContent = 'Erase everything'; self.classList.remove('confirm'); }, 4000); return; }
+        try { localStorage.removeItem(KEY); } catch (e) {}
+        state = { checkins: {}, notes: [], celebrated: [] }; armed = false;
+        this.textContent = 'Erase everything'; this.classList.remove('confirm');
+        show('setupView');
+      };
+
+      if (state.start) { show('mainView'); renderMain(); } else { show('setupView'); }
+
+      // refresh at midnight / when returning to the app
+      document.addEventListener('visibilitychange', function () { if (!document.hidden && state.start && !$('mainView').classList.contains('hidden')) renderMain(); });
+
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function () { navigator.serviceWorker.register('dwc-sw.js').catch(function () {}); });
+      }
+    })();
+  </script>
+</body>
+</html>
